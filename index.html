@@ -129,7 +129,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2ee;height:100vh;dis
         <div class="av">MO</div>
         <div>
           <div class="ch-name">MightyOlu Sales Bot</div>
-          <div class="ch-st">● Online — Powered by Gemini AI</div>
+          <div class="ch-st">● Online — Powered by Groq AI</div>
         </div>
       </div>
       <div class="ch-r"><button onclick="openNote()">📄 Order Note</button></div>
@@ -162,10 +162,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2ee;height:100vh;dis
 </div>
 
 <script>
-const GEMINI_KEY = 'AIzaSyAeb6mr0Wa1wecgjl10vEoBUVkKWzy9LDQ';
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
+// ========== GROQ API CONFIG ==========
+const GROQ_KEY = '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';
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile'; // Free & fast Groq model
 
-const PRODUCTS = [["Ayoola Cassava fufu 900g", 4.99, 0.9], ["Banga Red Palm Oil 4L", 14.99, -1], ["Puregro Easy cook Rice 5kg", 5.99, 5.0], ["Puregro Golden Sella Basmati Rice 10kg", 17.99, 10.0], ["POA Peeled Beans 1.5kg", 4.99, 1.5], ["POA Peeled Beans 4kg", 10.99, 4.0], ["Plantain fufu 500g", 5.99, 0.5], ["Unripe Plantain box 20kg", 48.0, 20.0], ["Milo Sachet Refill 400g", 5.99, 0.4], ["Turkey Mid wings 5kg", 19.5, 5.0], ["Cow Snout 1kg", 4.99, 1.0], ["Kawun/Potash 90g", 1.5, 0.09], ["Ripe Plantain box 20kg", 55.0, 20.0], ["Banga Sticks", 2.3, -1], ["TS| Coconut Peanut 330g", 3.99, 0.33], ["Bournvita 500g", 6.5, 0.5], ["Bournvita 900g", 10.99, 0.9], ["Cow foot 1kg", 3.99, 1.0], ["Achi Soup Thickner 70g", 1.79, 0.07], ["Mama\u2019s Choice Plantain Fufu 1.5kg", 12.5, 1.5], ["Frozen wings 1kg", 5.99, 1.0], ["Frozen Mid wings(cut) 10kg", 45.3, 10.0], ["Jolly Chicken thigh 2kg", 4.99, 2.0], ["Beef Reed (Abodi) 1 kg", 3.99, 1.0], ["Beef Stripe/Shaki 1kg", 4.99, 1.0], ["POA Black eye beans 1.5kg", 4.49, 1.5], ["Boneless Cowfoot 1kg", 7.99, 1.0], ["Cow Mask 1kg", 4.99, 1.0], ["Cow snout 1kg", 4.5, 1.0], ["Ground Crayfish 70g", 2.79, 0.07], ["Derica Tomato paste 400g", 1.85, 0.4], ["Peanut/Groundnut 500g", 4.99, 0.5], ["Eniola poundo 1.5kg", 7.99, 1.5], ["Eniola Poundo Yam 4kg", 16.99, 4.0], ["Turkey Wings(Uncut) 5kg", 19.5, 5.0], ["Goat meat 1kg", 9.99, 1.0], ["Golden Morn 300g", 2.5, 0.3], ["Ah Whole Egusi/Melon 100g", 1.69, 0.1], ["Semovita 2kg", 3.99, 2.0], ["Ijebu Garri 1.5kg", 3.99, 1.5], ["Knorr Chicken (8gx45)", 2.8, -1], ["Knorr cubes (8gx45)", 1.99, -1], ["Maggi Star 400g", 1.99, 0.4], ["Nido Powdered milk 400g", 5.99, 0.4], ["Puregro whole Nutmeg 100g", 3.29, 0.1], ["Ofada Rice 1.5kg", 4.99, 1.5], ["Ofada Rice 4kg", 12.99, 4.0], ["Mild Curry 140g", 2.5, 0.14], ["Onga Seasoning Stew 50g", 0.69, 0.05], ["Pepper soup spice 100g", 2.4, 0.1], ["Dehydrated Periwinkle 300g", 9.0, 0.3], ["AH Poundo Iyan 8kg", 26.99, 8.0], ["Royco powder 400g", 1.99, 0.4], ["Suya Spice 100g", 2.7, 0.1], ["Tropical Sun chicken stock powder 1kg", 3.99, 1.0], ["POA White Garri(Ghana) 4kg", 9.99, 4.0], ["Puregro Honey Beans 4kg", 16.99, 4.0], ["Peeled Beans 4kg", 9.99, 4.0], ["AH Poundo Iyan 1.5kg", 5.49, 1.5], ["Puregro Peeled Beans 1.5kg", 4.99, 1.5], ["Hake Fish 10kg Box", 46.0, 10.0], ["Turkey Mid-Wings 1kg", 5.99, 1.0], ["AH Iru Woro 80g", 1.99, 0.08], ["Asiko Plantain Crisps Honey Roasted 50g Box 24", 20.49, 0.05], ["Plantain Crisps sweet chilli 50g (box of 24)", 20.49, 0.05], ["Asiko Plantain Crispy L/Salted 75g (box of 24)", 20.49, 0.075], ["Asiko Plantain Crisps unsalted (box of 24)", 20.99, -1], ["Ayoola Poundo Yam 1.8kg", 7.99, 1.8], ["Banga Red Plam Oil 2 litres", 7.99, -1], ["Cerelac Honey and Wheat with milk 1kg", 8.99, 1.0], ["Cerelac Mixed fruits and wheat with milk 1kg", 8.99, 1.0], ["Checker Custard Vanilla flavour 2kg", 7.99, 2.0], ["Checker Custard Banana Flavour 2kg", 7.99, 2.0], ["Checker Custard Powder Vanilla 400g", 2.99, 0.4], ["Derica double concentrate Tomato paste 70g", 0.6, 0.07], ["Derica double concentrate Tomato paste 850g", 3.6, 0.85], ["Gino party jollof Tomato seasoning mix 50g", 0.6, 0.05], ["Gino peppe & onion Tomato seasoning mix 50g", 0.6, 0.05], ["Gino Tomato mix 55g", 0.6, 0.055], ["Golden penny Spaghetti 500g", 1.5, 0.5], ["Grandios Pap brown 500g", 2.35, 0.5], ["Indomie Ghana Chicken Noodles 70g  (box of 40)", 10.99, 0.07], ["Grandios Pap White 500g", 2.99, 0.5], ["Natural Palm Drink 600ml", 3.0, -1], ["Golden Penny Spaghetti 500g", 1.45, 0.5], ["Grandios Pap Brown 500g", 2.3, 0.5], ["Indomie Nigerian Chicken Noodles 70g (box of 40)", 8.99, 0.07], ["Knorr Aromat All Purpose Seasoning 90g", 1.99, 0.09], ["Lady B Custard Powder 1.6kg", 6.5, 1.6], ["Lion Brand Curry Powder 25g", 1.0, 0.025], ["Lion Brand Dried Thyme 10g", 1.0, 0.01], ["Maggi star Cubes 400g", 2.2, 0.4], ["Nkulenu Palm Soup 390g", 2.2, 0.39], ["Ola Ola Pounded Yam 1.8kg", 14.5, 1.8], ["Ola Ola Pounded Yam 4.5kg", 34.99, 4.5], ["Peak Instant Whole Milk Powder 2.5Kg", 26.5, 2.5], ["Peak Instant Whole Milk Powder 400g", 5.99, 0.4], ["Tasty Tom Jollof Mix Paste", 0.6, -1], ["Puregro Semolina Fine", 7.49, -1], ["Puregro Ijebu garri 1.5kg", 2.99, 1.5], ["Puregro Ijebu garri 4kg", 6.99, 4.0], ["Puregro 100% Whole Wheat Sharbati Chakki Atta 10Kg", 10.99, 10.0], ["Puregro All Purpose Seasoning 100g PM 79p", 0.79, 0.1], ["Puregro Aroma Basmati Rice 2kg PM \u00a33.99", 3.99, 2.0], ["Puregro Aroma Platinum Extra Long Grain Basmati Rice 10kg", 16.99, 10.0], ["Puregro Aroma Platinum Extra Long Grain Basmati Rice 5kg", 8.99, 5.0], ["Puregro Banku Mix Dough 1kg PM \u00a32.49", 2.49, 1.0], ["Puregro Bay Leaves 15g PM 79p (Box of 10)", 0.79, 0.015], ["Puregro Bay Leaves 30g PM", 1.99, 0.03], ["Puregro Bean Flour 1.5kg PM", 4.99, 1.5], ["Puregro Black Eye Beans 1.5kg", 3.49, 1.5], ["Puregro Black Eye Beans 4kg", 7.99, 4.0], ["Puregro Black Pepper Fine 100g", 1.39, 0.1], ["Puregro Black Pepper Whole 100g", 1.69, 0.1], ["Puregro Brown Basmati Rice 2kg", 3.99, 2.0], ["Puregro Brown Basmati Rice 5kg", 8.99, 5.0], ["Puregro Brown Beans 1.5kg", 7.99, 1.5], ["Puregro Brown Beans 4kg", 16.99, 4.0], ["Puregro Roasted Peanut 500g", 3.99, 0.5], ["Tom tom", 1.99, -1], ["Tigernut", 3.99, -1], ["Donkwa", 2.5, -1], ["Bread", 2.0, -1], ["Okro 100g", 1.0, 0.1], ["Okro 500g", 4.5, 0.5], ["Coke or Fanta", 1.5, -1], ["Shoko", 2.0, -1], ["Green Chili Pepper", 4.0, -1], ["yellow Garri 20Kg", 29.99, 20.0], ["Coconut", 1.0, -1], ["frozen Pomo Ijebu", 5.4, -1], ["Iwisa 2Kg", 3.2, 2.0], ["Simas Butter", 2.0, -1], ["Chin Chin", 2.5, -1], ["Tura Soap pack of 3", 2.5, -1], ["Dudu Osun", 1.1, -1], ["Delta Soap", 2.0, -1], ["Super Malt Pk of 12", 17.99, -1], ["Malta guiness pack of 24", 13.99, -1], ["Malta guineas 1can", 1.0, -1], ["Smoked Panla", 5.99, -1], ["Plantain chips", 1.0, -1], ["Farina 1.5kg", 5.99, 1.5], ["Spicity jollof & stew 10g", 0.2, 0.01], ["Robb", 1.2, -1], ["Ghana palmnut soup 800g", 3.99, 0.8], ["Palm soup base 390g", 2.4, 0.39], ["Fufu pack of 5", 6.5, -1], ["Fufu 1", 1.3, -1], ["Puregro Golden Sella Basmatti rice 2kg", 4.49, 2.0], ["Pumpkin leaves", 2.0, -1], ["Ayoola poundo 900g", 4.99, 0.9], ["Semovita 1kg", 2.0, 1.0], ["Honeywell whole wheat meal 4.75kg", 9.99, 4.75], ["Honeywell whole wheat meal 1.8kg", 4.99, 1.8], ["Indomie super pack", 13.99, -1], ["Olu olu Plantain chips green", 17.99, -1], ["Peak Milk 900g", 10.99, 0.9], ["Puregro Cassava Dough", 1.99, -1], ["Puregro Corn Dough", 1.99, -1], ["Puregro Cinnamon Powder 100g", 1.29, 0.1], ["Puregro Golden Sella Basmatti Rice 5kg", 9.49, 5.0], ["Puregro Roasted Peanut 330g", 2.99, 0.33], ["Puregro Yellow Corn Dough 1kg", 2.49, 1.0], ["Fanta Crate of 24", 28.99, -1], ["Rani Orange crate of 24", 14.99, -1], ["Rani crate Mango of 24", 14.99, -1], ["Rani 1", 0.8, -1], ["Iwisa 5kg", 8.5, 5.0], ["Indomie 3pcs", 1.0, -1], ["Amstel Malt", 13.99, -1], ["Guineas small stout", 2.5, -1], ["Ghana Indomie", 12.5, -1], ["Yam Flour 3.5kg", 8.99, 3.5], ["Yam Flour 1.5kg", 2.99, 1.5], ["frozen Catfish 2.5kg Pack", 9.99, 2.5], ["Mackerel/Titus 5kg Box", 27.0, 5.0], ["Jack Mackerel/KoteFish", 3.5, -1], ["Golden Morn 900g", 4.99, 0.9], ["Red Fish", 5.99, -1], ["frozen Bitter Leaves (Ndole)", 2.0, -1], ["Atieke", 2.2, -1], ["Pika Bobolo 700g", 3.99, 0.7], ["Cassava Tubers Peeled", 2.5, -1], ["Puregro Easycook rice 10kg", 10.99, 10.0], ["Turkey mid wings 10kg", 38.99, 10.0], ["Smoked turkey 1kg", 6.99, 1.0], ["Smoked turkey wings 5kg", 29.99, 5.0], ["Frozen hen legs", 9.99, -1], ["Chicken drumsticks", 4.99, -1], ["Chicken Thigh 3kg", 10.99, 3.0], ["Pluvera Whole Hens", 4.99, -1], ["Whole pounded Oat flour", 4.99, -1], ["Jumbo chicken seasoning", 5.0, -1], ["Tropical SunGolden Sella Basmati Rice", 10.99, -1], ["Tropical SunGolden Sella Basmati Rice 10kg", 19.99, 10.0], ["Tropical SunGolden Sella Basmati Rice 20kg", 38.99, 20.0], ["Garlic", 2.8, -1], ["Couscous", 4.99, -1], ["Evaporated Peak milk", 1.8, -1], ["Kulikuli", 1.99, -1], ["Titus Sardine", 1.5, -1], ["vamino Soy Drink", 1.6, -1], ["Vamino Soy Drink Pk of 6", 9.0, -1], ["AH Shito Extra Hot 350ml", 5.49, -1], ["Beef Shin", 10.99, -1], ["Pure Heaven Wine", 2.99, -1], ["Maggi Crayfish", 4.4, -1], ["Tumeric 300g", 2.8, 0.3], ["Nido 2.5Kg", 25.5, 2.5], ["Oxford Cabin Biscuit", 1.99, -1], ["Dunn River Cornmeal Coarse 1.5kg", 3.99, 1.5], ["Olu Olu Palm Oil 500ml", 3.5, -1], ["Konkonte Flour 1Kg", 2.49, 1.0], ["maggi Liquid Hot", 1.5, -1], ["Cocoyam Fufu", 4.99, -1], ["Tetmosol Soap Pk of 6", 7.5, -1], ["Kilishi 70g", 3.99, 0.07], ["Blue Band 450g", 3.99, 0.45], ["Shea Butter", 5.5, -1], ["Blueband small", 2.3, -1], ["Kaddu", 4.0, -1], ["Matoke", 4.0, -1], ["Oziza", 2.0, -1], ["Curry Leaf", 1.3, -1], ["Oha Leaf", 2.0, -1], ["Aboniki", 1.5, -1], ["Frozen Peeled Garlic", 3.99, -1], ["Cocoyam", 3.2, -1], ["Rajah Haloli", 3.8, -1], ["okra", 8.5, -1], ["Fenn Greekseed", 2.3, -1], ["Green Cardamon", 2.2, -1], ["Fried Onion", 2.5, -1], ["Garam Masala", 2.5, -1], ["Masrass Curry Powder", 2.5, -1], ["Vegetable Oil 5L", 8.99, -1], ["Dudu Osun Pk of 6", 6.5, -1], ["Delta Soap Pk", 11.99, -1], ["Supermalt Pk of  12", 16.99, -1], ["Farouz Pk of 24", 13.99, -1], ["Moimoi Leave", 2.0, -1], ["Ducros 6", 5.0, -1], ["Dunns River Coconut Milk", 1.6, -1], ["Curry goat seasoning", 1.2, -1], ["Fish Seasoning 100g", 1.2, 0.1], ["Fayrouz Pineapple drink", 1.0, -1], ["Semovita 5kg", 9.99, 5.0], ["Jubilee Sunflower 1Ltr", 2.1, -1], ["Jubilee Sunflower Oil 5Ltr", 8.99, -1], ["TS Sunfloweer Oil", 8.99, -1], ["Peacock Easy cook Rice 10kg", 16.99, 10.0], ["Peacock Easy cook Rice 20kg", 33.99, 20.0], ["Amigo Apple/strawberry box of 24", 13.99, -1], ["Amigo", 0.6, -1], ["Badia Basil 23.5g", 1.8, 0.024], ["Badia Onion Powder", 2.5, -1], ["Badia Chia Seed", 0.9, -1], ["Badia Chia Seeds 623.7g", 9.99, 0.624], ["Badia Iodized Salt 1.13Kg", 2.99, 1.13], ["Badia Jamaican Style Curry", 6.99, -1], ["Badia Minced Onion 113.4g", 2.5, 0.113], ["Badia Nutmeg Whole", 0.9, -1], ["Badia Oregano", 5.99, -1], ["Badia Pink Himalaya Salt", 5.5, -1], ["Badia Sea Salt Coarse 1kg", 4.99, 1.0], ["Badia Sorreal (Flor de Jamaican)", 4.99, -1], ["Badia Vinegar and Sea salt seasoning", 2.99, -1], ["Badia White Pepper ground", 0.65, -1], ["Bragg Apple Cider Vinegar", 5.99, -1], ["Lespaon Sardine", 1.3, -1], ["Dunn\u2019s River  Caribbean Hot curry powder 500g", 4.99, 0.5], ["Dunn\u2019s River Caribbean Mild Curry 500g", 4.99, 0.5], ["Dunn\u2019s River", 4.99, -1], ["Peacock Easy cook Rice 5kg", 8.99, 5.0], ["Peacock Golden Sella Rice 10kg", 19.99, 10.0], ["Cloves whole 40g", 1.19, 0.04], ["Puregro Farina (Potato Starch) 4kg", 8.99, 4.0], ["Puregro Kokonte flour 1kg", 2.49, 1.0], ["Puregro Kokonte 3.5kg", 6.49, 3.5], ["Puregro Linseed Brown 100g", 0.8, 0.1], ["Puregro Linseed Brown 300g", 2.99, 0.3], ["Puregro Plantain Fufu", 5.99, -1], ["Puregro Plantain fufu 4Kg", 15.99, 4.0], ["Puregro Sorrel Hibiscus 250g", 3.49, 0.25], ["Puregro whole green Cardamom 50g", 2.8, 0.05], ["Broom", 3.0, -1], ["Cocosamba 100ml", 1.5, -1], ["Guinness stout small box of 24", 45.99, -1], ["Guiness Stout 600ml", 3.99, -1], ["Jekonmo 100ml", 1.5, -1], ["Orijin 750ml", 12.5, -1], ["Sponge net", 1.2, -1], ["Trophy 600ml", 2.7, -1], ["Bitter leaf", 3.0, -1], ["kerala", 4.3, -1], ["corn", 0.7, -1], ["Ginger", 2.8, -1], ["Plantain", 2.9, -1], ["Lemon", 3.9, -1], ["Pawpaw/Papaya", 5.5, -1], ["Garden egg", 9.5, -1], ["Cow tail", 13.0, -1], ["Cow foot 2kg", 6.99, 2.0], ["Bag", 0.65, -1], ["Ayoola Pounded Yam 4.5kg", 16.99, 4.5], ["indomie Peppersoup", 9.99, -1], ["Chana Masala 100g", 1.5, 0.1], ["Maggi Star 400g (3)", 5.0, 0.4], ["Chicken Masala Powder", 1.5, -1], ["Coriander Powder 100g", 0.79, 0.1], ["Garam Masala 100g", 1.5, 0.1], ["Kasori Methi  100g", 1.6, 0.1], ["Puregro Cassava flour 3.5kg", 6.49, 3.5], ["Cinnamon Sticks 150g", 3.5, 0.15], ["Cinnamon Sticks 60g", 1.69, 0.06], ["Supermalt pack of 6", 6.5, -1], ["Supermalt pack of 24", 19.99, -1], ["Supermalt 330ml (12)", 12.99, -1], ["Supermalt", 1.5, -1], ["Ghana fresh  palm soup 400g", 2.99, 0.4], ["Pepsi 250ml", 0.8, -1], ["Mirinda", 1.0, -1], ["Sour soup Tea", 4.99, -1], ["Ugu", 2.0, -1], ["Peanut paste 500g", 3.99, 0.5], ["Catfish cutlet 300g", 10.99, 0.3], ["AH Panla Fish Whole 300g", 9.99, 0.3], ["Jolly Chicken 1kg", 2.99, 1.0], ["Dark Red Kidney Beans 1.5kg", 3.99, 1.5], ["Kala Chana 1.5kg", 2.99, 1.5], ["Puregro Moringa Tea 40g", 1.79, 0.04], ["Pink Peanut Jumbo", 1.59, -1], ["Red Split Lentils", 2.99, -1], ["Rice Flour 1.5Kg", 2.69, 1.5], ["Rice Flour 4kg", 6.5, 4.0], ["Sorrel & Ginger Tea 40g", 1.79, 0.04], ["Urid Dal 1.5Kg", 4.39, 1.5], ["7Up pack of 24", 17.99, -1], ["Malta guineas 3 cans", 2.5, -1], ["Pan orange pack", 2.99, -1], ["Oloyin beans 20kg", 56.0, 20.0], ["Ijebu Gari 20kg", 27.99, 20.0], ["Amigo Pk of 8", 3.99, -1], ["Boom Shack-Lak Chipotle", 2.99, -1], ["plantain chips 3", 2.5, -1], ["Grandious Pap Yellow 500g", 2.7, 0.5], ["Kurkure Chili Chakata 68g", 0.5, 0.068], ["Chili Kurture 72g", 0.55, 0.072], ["Kurture  Green Chutney 68g", 0.5, 0.068], ["Kurture Munch Masala 75g", 0.5, 0.075], ["Olu Olu Poundo 8kg", 31.99, 8.0], ["Olu Olu Poundo 4kg", 16.99, 4.0], ["Puregro Black Eye Beans 25kg", 42.99, 25.0], ["Honey Beans 20kg", 48.0, 20.0], ["Ghana Gari 3.5Kg", 6.99, 3.5], ["Milo Refill 800g", 9.99, 0.8], ["Maaza 200ml", 0.7, -1], ["Maaza Tetra 125ml", 0.5, -1], ["Ducros 20g", 1.0, 0.02], ["Olu Olu Plantain Chips yellow", 17.99, -1], ["All Purpose Seasoning 300g", 1.99, 0.3], ["Puregro Aromatic Basmati Rice 10Kg", 16.99, 10.0], ["Barbeque Seasoning 100g", 0.79, 0.1], ["Puregro Chicken Seasoning 100g", 0.79, 0.1], ["Chili and Lemon Seasoning 100g", 0.89, 0.1], ["Easy Cook Rice 2Kg", 2.69, 2.0], ["Honey Beans 1.5kg", 5.99, 1.5], ["Jerk Seasoning 100g", 0.89, 0.1], ["Puregro Pounded Yam 4kg", 13.99, 4.0], ["Indomie Onion Pk", 9.99, -1], ["Box of Yam", 55.0, -1], ["Yam 1kg", 4.0, 1.0], ["Ghana taste Peanut Butter", 2.99, -1], ["Hot Pepper/Rodo", 16.0, -1], ["Sweet Potatoes 1kg", 4.99, 1.0], ["Yellow Croaker 3kg", 15.99, 3.0], ["Red Snapper", 5.99, -1], ["Mirgal  Myan", 5.99, -1], ["Rohu Myanmar", 4.2, -1], ["Boal BD", 8.99, -1], ["Ayr BD", 11.99, -1], ["Dathi Fish", 5.99, -1], ["Sprats Fish", 5.99, -1], ["Hake Fish", 4.99, -1], ["Iwisa 10kg", 15.99, 10.0], ["Red Bull", 1.5, -1], ["TS Tamarind Drink", 1.5, -1], ["Green Chili", 6.0, -1], ["Bitter cola", 5.0, -1], ["Mazoe", 6.99, -1], ["Meat pie 3", 5.0, -1], ["Meatpie", 2.0, -1], ["Dry Pomo Ijebu 500g", 4.5, 0.5], ["Chicken feet", 3.99, -1], ["Yellow Gari 1.5kg", 3.49, 1.5], ["Zobo", 3.5, -1], ["Kadoo", 5.99, -1], ["Kerela", 5.8, -1], ["Chopped Okra", 1.99, -1], ["Frozen Scotch bonnet", 2.99, -1], ["Molokhia ewedu(Frozen)", 1.5, -1], ["Miondo Cassava Sticks", 2.99, -1], ["Baracuda 1kg", 4.7, 1.0], ["Baracuda Steak 1kg", 5.99, 1.0], ["Small Sprat 1kg", 5.99, 1.0], ["Turkey Gizzard", 4.99, -1], ["Badia Sea Salt 269g", 1.99, 0.269], ["Frozen okra", 1.5, -1], ["Derica 210g", 1.3, 0.21], ["Orijin 200ml 2", 6.5, -1], ["Orijin Bitters 1", 3.5, -1], ["Alomo Bitters 2", 5.0, -1], ["Alomo BItters", 2.99, -1], ["Snail", 18.99, -1], ["Mamas Choice Plantain fufu 4kg", 29.99, 4.0], ["Vita malt Classic Pack of 6", 7.5, -1], ["Vitamalt", 1.5, -1], ["Supermalt  330ml Pack of 12", 12.99, -1], ["Bama 3885ml", 4.0, -1], ["Limca Can", 0.8, -1], ["Frozen Ugu Leaves 500g", 2.0, 0.5], ["Twisted Spaghetti", 1.5, -1], ["Tomatoes Box", 18.99, -1], ["Tomatoes", 3.3, -1], ["Rodo/Hot Pepper Box 3kg", 55.0, 3.0], ["Dunns River Black eye beans 400g", 0.79, 0.4], ["Dunns River Butter Beans 400g", 0.79, 0.4], ["Dunns River Dried Thyme 200g", 4.99, 0.2], ["Encona Jamacan Jerk BBQ sauce 220ml", 1.7, -1], ["Encona Hot Pepper Sauce", 1.99, -1], ["Encona Thai Chilli Sauce 142ml", 1.7, -1], ["Honeywell Semolina 1.8kg", 3.99, 1.8], ["Maggi Masala Noodles", 0.25, -1], ["Onga Classic 40g", 0.6, 0.04], ["Ajinomoto 2", 1.0, -1], ["Benny 2", 1.0, -1], ["Assorted mixed meat", 6.99, -1], ["Periwinkle", 7.99, -1], ["Cocoyam/Edos", 4.99, -1], ["Shito 160g", 3.5, 0.16], ["RG Shito Mild sauce 160ml", 3.49, -1], ["Popcorn", 2.99, -1], ["Pawpaw", 6.0, -1], ["Long Pepper/Tatashe Box", 20.99, -1], ["Chicken 10kg", 20.99, 10.0], ["Grounded Egusi 200g", 2.99, 0.2], ["Dried Shrimp", 4.29, -1], ["Shrimps peeled", 2.99, -1], ["Goat meat with skin 1kg", 20.99, 1.0], ["Kitchen Glory roll of 10", 2.5, -1], ["Grace Mighty Malt", 1.5, -1], ["Onga Classic 8g", 0.15, 0.008], ["Onga Stew 40g", 0.2, 0.04], ["Chilli Powder 100g", 0.89, 0.1], ["Curry Powder Hot/Mild 100g", 0.89, 0.1], ["Lemon Pepper 100g", 1.29, 0.1], ["Pimento Ground", 1.5, -1], ["Crushed Chili 100g", 1.29, 0.1], ["Ghana gari 1.5kg", 3.29, 1.5], ["Puregro Golden Basmati 20kg", 34.99, 20.0], ["Titus/Mackerel Fish", 6.0, -1], ["Olu Olu Palm Oil 2Kg", 9.99, 2.0], ["Olu Olu Pam oil 1Ltr", 5.5, -1], ["Olu Olu Palmoil 4Ltr", 17.99, -1], ["Cerevita", 6.99, -1], ["Maputi pk of 20", 7.99, -1], ["Cooked Rice", 5.5, -1], ["Ayer  Fish", 8.99, -1], ["Crabs Blue 700g", 5.99, 0.7], ["Pabda 500g", 4.99, 0.5], ["Tengra 500g", 5.99, 0.5], ["Koi", 3.5, -1], ["Magur Desi 500g", 3.5, 0.5], ["Keski Block 300g", 2.5, 0.3], ["Desi Puti Block", 2.5, -1], ["Baspata Block 300g", 3.5, 0.3], ["Chilapata 300g", 3.5, 0.3], ["De Rica Double Concentrate Tomato Paste 210g (Box of 24)", 1.27, 0.21], ["De Rica Double Concentrate Tomato Paste 400g (Box of 24)", 1.73, 0.4], ["Puregro Gold Instant Ginger Tea 360g", 2.99, 0.36], ["Sky ALM 200ml (pack of 24)", 2.6, -1], ["Sky C/G (Pack of 24)", 0.98, -1], ["Sky Cubes CHK Green (48x8g)", 2.6, 0.008], ["Sky Mrnd 250ml (Pack of )", 0.75, -1], ["Sky Sponge 250ml (Pack of 24)", 1.0, -1], ["Sky  GMC (Box 0f 24)", 0.6, -1], ["Puregro Easy Cook Rice 10kg PM", 10.99, 10.0], ["Puregro Easy Cook Rice 2kg PM", 2.69, 2.0], ["Puregro Cinnamon Tea 40g PM", 1.79, 0.04], ["Puregro Hausa Koko 1kg PM", 4.99, 1.0], ["Puregro Lemongrass Tea 40g PM", 1.79, 0.04], ["Puregro Peppermint Tea 40g PM", 1.79, 0.04], ["Puregro Pimento (All spice) Whole", 1.69, -1], ["Puregro Popcorn kernels 2kg", 5.0, 2.0], ["Saxa Table Salt", 1.73, -1], ["Sky GMB", 0.81, -1], ["Peacock Yellow 10kg", 20.5, 10.0], ["Lal quila Rice 2kg", 4.99, 2.0], ["Lal Quila Rice 5kg", 11.99, 5.0], ["Lal Quila Rice 10kg", 21.99, 10.0], ["Cinnamon Tera", 1.79, -1], ["Dalgety Pure Pepermint Tea", 1.79, -1], ["Puregro Popcorn Kernels", 2.79, -1], ["Guiness Malta Bottle", 1.0, -1], ["Mirinda Box", 16.99, -1], ["Pfuko", 1.7, -1], ["Mayonnaiose 750g", 6.99, 0.75], ["Yam Box", 45.0, -1], ["Whole Pimento", 1.99, -1], ["Dunns River Barbeque seasoning", 1.5, -1], ["Dunns River Everyday Seasoning", 1.5, -1], ["Dunns River Oxtail Seasoning", 1.5, -1], ["Tolly Boy 10kg", 16.99, 10.0], ["Ayoola Cassava Fufu 1.8kg", 6.99, 1.8], ["Badia Jalapeno", 2.5, -1], ["Gino Curry Powder", 0.2, -1], ["Honeywell Semolina 5Kg", 9.99, 5.0], ["Puregro Aroma PlatinumExtra Long Rice 2kg", 3.99, 2.0], ["Puregro Jollof Rice Seasoning 100g", 1.29, 0.1], ["Puregro Oregano", 0.79, -1], ["Puregro Parsely 80g", 1.49, 0.08], ["AH Yellow Corn Dough 2kg", 4.99, 2.0], ["Schwepps (24)", 13.5, -1], ["Unifresh Banku Mix 500g", 3.5, 0.5], ["Unifresh Fufu 4kg", 9.99, 4.0], ["Unifresh Tom Brown 500g", 3.5, 0.5], ["Ofada Oil 2Ltr", 5.99, -1], ["Yellow Rodo", 10.0, -1], ["Ogiri 50g", 5.99, 0.05], ["stock fish head", 4.5, -1], ["Lipton", 1.5, -1], ["Unripe Plantain chips", 4.5, -1], ["Egusi/Melon 400g", 6.99, 0.4], ["De rica Double Concentrate 70g Box of 50", 29.0, 0.07], ["Nido Powdered Milk 900g", 10.99, 0.9], ["Yellow Pepper", 10.0, -1], ["Corn Dough 2kg", 4.99, 2.0], ["Cassava Dough 2kg", 4.99, 2.0], ["AH Chin Chin 500g", 3.99, 0.5], ["Yam Flour 10kg", 20.0, 10.0], ["HoneyComb", 6.99, -1], ["AH Ground Egusi/Melon 400g", 5.89, 0.4], ["Plantain box", 45.0, -1], ["Tatashe", 5.7, -1], ["tomatoes 1/Kg", 2.2, -1], ["Tilapia 800g-1200g (big)", 10.99, 0.8], ["Xpression Super braid", 9.0, -1], ["Xpression Rich braid", 5.0, -1], ["Peacock Yellow 5kg", 11.99, 5.0], ["Tolly Boy 5kg", 9.5, 5.0], ["Olu Olu Poundo 1.2kg", 5.99, 1.2], ["schweppes Box(24)", 13.99, -1], ["okra Box 4kg", 32.0, 4.0], ["Okra Half Box", 16.0, -1], ["Ades Chips Pk", 5.5, -1], ["Cashew Nut 500g", 7.99, 0.5], ["Wake Leaf", 2.7, -1], ["Simas Butter 3", 5.0, -1], ["Bonga Fillet", 4.5, -1], ["Ukwa", 4.5, -1], ["Peppersoup Spice", 1.79, -1], ["Dried Anchoves", 3.5, -1], ["Dried Prawn", 3.6, -1], ["Dried Baracuda", 5.5, -1], ["Stockfish Cutlet", 5.5, -1], ["Chapman", 2.0, -1], ["Fresh Tumeric", 16.0, -1], ["5kg Hake", 23.0, 5.0], ["Sardine 10kg", 30.0, 10.0], ["5kg Chicken", 10.5, 5.0], ["Red Fish box(7kg)", 36.0, 7.0], ["Scent Leaves (Nchanwu)", 3.5, -1], ["Atteke 500gm", 44.0, -1], ["Snail Jombo 907gm", 225.0, -1], ["Ayoola Poundo Yam 9.1Kg", 34.99, 9.1], ["Gino Paty Jollof box", 25.99, -1], ["Graceco Yellow Pap", 3.2, -1], ["Indomie Hungryman", 13.99, -1], ["Milo 1.8kg", 18.99, 1.8], ["Bay Leaves 100g", 3.99, 0.1], ["Ijebu garri 10kg", 14.0, 10.0], ["Puregro Garlic Powder 300g", 1.89, 0.3], ["Puregro Ginger ground 100g", 0.99, 0.1], ["Puregro Paprika", 1.0, -1], ["Puregro Onion Powder", 0.99, -1], ["Puregro Rosemary 150g", 1.49, 0.15], ["Puregro Tumeric 300g", 1.49, 0.3], ["Puregro Tumeric 100g", 0.69, 0.1], ["Yam Flour(Elubo) 20kg", 58.0, 20.0], ["Tete", 2.5, -1], ["Soko", 2.0, -1], ["Uziza", 2.0, -1], ["Oha", 2.0, -1], ["Okazi(Frozen)", 2.0, -1], ["Abacha", 9.99, -1], ["Chicken gizzard", 3.99, -1], ["Tamarind", 2.99, -1], ["Grounded Egusi", 5.99, -1], ["AH Bonga Fillets", 3.49, -1], ["Catfish Fillets 100g", 3.99, 0.1], ["Catfish Fillets 400g", 13.99, 0.4], ["AH Grounded nut 100g", 1.79, 0.1], ["AH Hausa Koko 500g", 3.99, 0.5], ["AH Herring Fillet", 3.79, -1], ["AH Large Snails 300g", 10.99, 0.3], ["AH Medium Snail 300g", 9.99, 0.3], ["AH Oat Poundo", 3.99, -1], ["Frozen Brown Ogi 300g", 2.0, 0.3], ["Frozen Ogi White 300g", 2.0, 0.3], ["Frozen Ogi Yellow 300g", 2.0, 0.3], ["AH Plantain Fufu 1.5kg", 5.99, 1.5], ["AH Stockfish Cod 150g", 5.49, 0.15], ["AH Stockfish Steak 100g", 3.79, 0.1], ["AH Whole Whole Egusi", 5.89, -1], ["AH Cameroon Pepper 60g", 1.79, 0.06], ["Blue Ocean Salt Fish 200g", 2.5, 0.2], ["DR Ground Nutmeg", 2.99, -1], ["Exotic Corn Dough", 4.99, -1], ["Chivita Juice", 2.5, -1], ["Ghana Best Palmnut Soup 400g", 2.1, 0.4], ["GB Palmnut soup 800g", 4.0, 0.8], ["GB Peanut Butter 400g", 2.5, 0.4], ["GB Abemudro Palmnut Soup 800g", 4.0, 0.8], ["Ghana Fresh Palmnut Creame 800g", 4.9, 0.8], ["Jafro Chin Chin 900g", 6.5, 0.9], ["Jafro Chin Chin Coconut 250g", 2.5, 0.25], ["Cerelac Wheat with Milk", 8.99, -1], ["Pure  HeavenWine Box of 12", 28.99, -1], ["Sankofa Fufu 2kg", 12.99, 2.0], ["Sea Moon Ofada 5kg", 12.99, 5.0], ["Setara Golden Sella 10kg", 19.99, 10.0], ["Setara Golden Sella 2kg", 4.5, 2.0], ["Setara Golden Sella Basmati Rice 20kg", 38.99, 20.0], ["Satara Golden Sella Basmati Rice 5kg", 10.99, 5.0], ["TS Adobo Seasoning 100g", 1.2, 0.1], ["TS Aroma Stock Powder", 3.99, -1], ["TS Butter Beans 500g", 1.99, 0.5], ["TS Chicken Seasoning 100g", 1.0, 0.1], ["TS Chicken Stock Powder 1kg", 3.99, 1.0], ["TS Crayfish Stock 1kg", 5.99, 1.0], ["TS Dries Mixed herbs 30g", 1.2, 0.03], ["TS Hominy Yellow Corn 500g", 1.5, 0.5], ["TS Plantain Crisps Chilli 45og", 4.99, -1], ["AH Yellow Garri 20kg", 32.99, 20.0], ["AH Ijebu Garri 3.5kg", 6.69, 3.5], ["AH Ghana Garri", 6.69, -1], ["Thai Pearl Jasmine Rice 10kg", 13.99, 10.0], ["AH Red Palm OIl 500ml", 1.99, -1], ["AH Palm Oil 1L", 3.75, -1], ["AH Palm Oil 2L", 6.99, -1], ["AH Zomi Palm Oil 500ml", 1.99, -1], ["AH Zomi Palmoil 2L", 6.99, -1], ["AH Pounded Iyan 4kg", 13.99, 4.0], ["AH Plantain Fufu", 13.99, -1], ["AH Plantain Fufu 680g", 2.99, 0.68], ["Ts Coconut Peanut (330g*24)", 89.99, 0.33], ["Ts Coconut Peanut 50g", 1.2, 0.05], ["TS Coconut Peanut 165g", 2.99, 0.165], ["Peacock Basmatti 4kg", 10.99, 4.0], ["Ginger small", 1.5, -1], ["Gino 400g", 1.99, 0.4], ["Gino 210g", 1.2, 0.21], ["Ayoola Plantain Flour", 7.99, -1], ["Checkers Custard Banana Flavour 400g", 2.99, 0.4], ["Puregro Creamy Peanut Butter 1kg", 2.99, 1.0], ["Puregro Creamy Peanut butter 454g", 1.79, 0.454], ["Close Up Tooth paste130g", 2.0, 0.13], ["Fuku Lungs 1kg", 3.99, 1.0], ["Maggi chicken powder", 2.7, -1], ["Maggi Chicken Cubes", 3.99, -1], ["Knorr Chicken (8gx45) 2", 5.0, -1], ["Cat fish 8/10 pack", 20.99, -1], ["Fuku/lungs 1kg", 3.99, 1.0], ["Waake Leaves", 1.99, -1], ["Aani Golden Sella Basmatti Rice 10kg", 19.99, 10.0], ["African Queen Mackerel", 2.99, -1], ["AH Achi", 1.79, -1], ["Ground Hot Pepper", 1.79, -1], ["Ground Ogbonno 80g", 1.99, 0.08], ["Ground Okra 50g", 1.39, 0.05], ["Ground Prawns 70g", 4.49, 0.07], ["AH Stockfish Cod Head 300g", 4.99, 0.3], ["Stockfish Trimmings 100g", 3.79, 0.1], ["AH Tom Brown 500g", 3.99, 0.5], ["AH Whole Crayfish 40g", 1.79, 0.04], ["AH Whole Crayfish 70g", 2.79, 0.07], ["Whole Hot Pepper", 1.79, -1], ["AH Whole Ogbonno 80g", 1.99, 0.08], ["Yam Flour 5kg", 12.99, 5.0], ["Exeter Corned Beef 340g", 4.5, 0.34], ["Ghana Gari 10kg", 13.99, 10.0], ["King Prawns/shrimp 400g", 4.5, 0.4], ["KTC White Kidney Beans 400g", 0.8, 0.4], ["Lipton Tea 200g", 2.99, 0.2], ["Maggi Liquid Mild 125ml", 1.5, -1], ["Makazo Black Soap", 7.99, -1], ["Pangash Whole", 9.99, -1], ["Quaker Oats 500g", 1.99, 0.5], ["Queen Elizabeth Cocoa Butter Cream 500ml", 4.99, -1], ["Queen Elizabeth Cocoa Butter Cream 250ml", 2.99, -1], ["TS Crayfish Cubes", 3.2, -1], ["Funbact A Creame", 2.5, -1], ["Plantain quarter", 14.0, -1], ["Giant snail 950g", 45.0, 0.95], ["Semolina 10kg", 19.99, 10.0], ["Liver 1kg", 3.99, 1.0], ["Vitamalt Box of 24", 26.99, -1], ["Onions 4kg", 3.0, 4.0], ["AH Achi 50g", 1.79, 0.05], ["AH Banku Mix 1kg", 3.99, 1.0], ["AH Bobolo 700g", 2.99, 0.7], ["AH Cassava Dough", 3.99, -1], ["AH Cassava Dough 2kg", 3.99, 2.0], ["AH Cassava Flour 3.5kg", 6.99, 3.5], ["AH Catfish Fillet 200g", 7.49, 0.2], ["AH Ghana Gari 1.5kg", 2.99, 1.5], ["AH Ghana Gari 3.5kg", 6.99, 3.5], ["AH Ground LIst 100g", 1.69, 0.1], ["AH Ijebu Garri 1.5kg", 2.99, 1.5], ["AH Ijebu Garri 5kg", 8.99, 5.0], ["AH Oat Poundo 4kg", 9.99, 4.0], ["AH Tuo Zaafi 3.5kg", 9.99, 3.5], ["AH Frozen Uziza Leaves 200g", 2.0, 0.2], ["AH Water Leaves 500g", 2.0, 0.5], ["AH Yellow Gari 1.5kg", 3.49, 1.5], ["AH Yellow Gari 3.5kg", 7.49, 3.5], ["Afrimalt Can 12x500ml", 13.99, -1], ["Afrimalt 500ml", 1.2, -1], ["AH Tuo Zaafi 1kg", 3.49, 1.0], ["Apollo Sardines 125g", 1.2, 0.125], ["Dalgety Slimline Tea 40g", 2.99, 0.04], ["Dalgety Honey & Ginger Tea 72g", 2.5, 0.072], ["Dalgety Lemon & Ginger Tea 54g", 2.5, 0.054], ["Geisha Mackerel in Chilli 425g Red", 2.5, 0.425], ["Geisha Mackerel in Tomato 425g Green", 2.5, 0.425], ["Gino Thyme", 0.2, -1], ["frozen Smoked Cowfoot", 3.99, -1], ["IslandBest Golden Sella Basmatti Rice 10kg", 15.99, 10.0], ["IslandBest Golden Sella Basmatti Rice 5kg", 8.49, 5.0], ["Milo Ghana 400g", 5.99, 0.4], ["Milo Asian 1.4kg", 12.99, 1.4], ["Pegasus Table Salt", 1.6, -1], ["Pika frozen Water Leaves 250g", 1.5, 0.25], ["RG Kenkey 750g", 2.99, 0.75], ["RG Shitto Hot Sauce 160ml", 3.49, -1], ["RG Shitto Hot Sauce 350ml", 5.49, -1], ["Sapna Garlic Paste 1kg", 2.99, 1.0], ["Sapna Ginger Garlic (mix) paste", 2.99, -1], ["Sapna Ginger Paste 1kg", 2.99, 1.0], ["Smoked Turkey Midwings 5kg", 36.99, 5.0], ["Whole Smoked Hen (Hard Chicken)", 5.99, -1], ["Abido Cream", 7.5, -1], ["Purregro Ofada rice 4kg", 17.99, 4.0], ["Puregro Rosemary 40g", 0.79, 0.04], ["cowfoot bone", 3.99, -1], ["Soursop", 12.0, -1], ["Maggi Liquid Seasoning 960ml", 6.99, -1], ["Panla Ejakika", 3.99, -1], ["Haven Iru", 2.2, -1], ["Dunns River Jamaican Callabo", 2.99, -1], ["Mighty Malt |pk 6", 7.99, -1], ["Lasor Beef 10g", 0.2, 0.01], ["Jamaica Valley TO DI BONE 400g", 7.99, 0.4], ["Ovaltine", 8.99, -1], ["Puregro Ginger & Tumeric Tea 40g", 1.7, 0.04], ["Puregro Lemon & ginger Tea 40g", 1.79, 0.04], ["Mogu Blackcurrant", 0.99, -1], ["Mogu Mango Drink", 0.99, -1], ["Tetmosol 75g", 1.2, 0.075], ["Puregro Cayenne Pepper 100g", 1.19, 0.1], ["Tiger Curry Masala", 0.2, -1], ["Rani Co", 14.99, -1], ["family Combo", 69.99, -1], ["Sweet Potato Box", 40.0, -1], ["Ginger 700g", 1.99, 0.7], ["Maputi", 7.99, -1], ["Roller Meal", 17.99, -1], ["Sorghum 5kg", 9.5, 5.0], ["Hello", 1.2, -1], ["Freezits", 1.5, -1], ["Pearlenta Multigrain 10kg", 20.99, 10.0], ["Kulikuli big", 3.5, -1], ["Suya spice (yaji) 250g", 3.5, 0.25], ["Coconut Candy", 1.99, -1], ["Proteinm combo", 105.0, -1], ["Aani Golden Sella 5kg", 10.5, 5.0], ["Ground Crayfish 40g", 1.79, 0.04], ["AH Honey Beans  4kg", 15.99, 4.0], ["Waakye Leaves Powder 120g", 1.99, 0.12], ["Buttermint Sweet", 1.5, -1], ["Dalgety Lemongrass/Fevergrass Tea 40g", 2.5, 0.04], ["Dalgety Moringa with Green tea 40g", 2.99, 0.04], ["Dalgety Moringa with Pepermint 40g", 2.99, 0.04], ["Dalgety Pure Soursop Tea", 2.99, -1], ["Dalgety Pure soursop & Ginger Tea", 2.99, -1], ["Dalgety Pure Soursop_Moringa Tea 40g", 2.99, 0.04], ["Dettol Soap(Original)", 1.99, -1], ["Dettol Soap Skincare", 0.95, -1], ["Jafro Chinchin Coconut 160g", 1.5, 0.16], ["Jafro Chinchin Peanut 250g", 1.99, 0.25], ["Jafro Chinchi Peanut 450g", 3.5, 0.45], ["La Vivriere Soungouf 400g", 2.2, 0.4], ["Onga stew 8g", 0.2, 0.008], ["Setara 5Kg", 10.99, 5.0], ["Spicecity Fried Rice 10g", 0.2, 0.01], ["Spicity Jollof Box 230pcs", 29.99, -1], ["Spicity Jollof & Stew 100g", 0.99, 0.1], ["Tetmosol 120g", 1.99, 0.12], ["Ts Sugarcane Juice 310ml", 1.5, -1], ["Tura Soap 65g", 2.5, 0.065], ["Wisdom Toothbrush", 0.99, -1], ["Cow meat with skin", 12.99, -1], ["Carotone", 7.99, -1], ["Puregro chips", 16.99, -1], ["Peanut", 3.99, -1], ["Iwisa Instant porridge 1kg", 2.99, 1.0], ["Puregro Brown Beans 500g", 2.69, 0.5], ["Puregro Cashew 700g", 6.99, 0.7], ["Puregro Cashews nut 700g", 7.99, 0.7], ["Puregro chickpeas", 2.99, -1], ["puregro Garlic Granules 300g", 2.49, 0.3], ["puregro Garlic Powder 100g", 0.79, 0.1], ["Nescafe roll of 11", 5.0, -1], ["Gino Asun", 0.69, -1], ["Onga Beef", 1.5, -1], ["Honey 250ml", 6.99, -1], ["Honey 1L", 18.99, -1], ["Ofada 2kg", 6.99, 2.0], ["Mortar size 2", 12.99, -1], ["Mortar Size 3", 15.99, -1], ["Groundnut", 6.99, -1], ["White Millet", 2.99, -1], ["maggi Beef Powder", 2.99, -1], ["O0FADA 1KG", 2.5, 1.0], ["ofada 2kg", 6.99, 2.0], ["Lemon plus", 1.5, -1], ["Ghana Sack", 2.99, -1], ["Ghana Sack Big", 6.99, -1], ["Tasty Powder", 2.99, -1], ["honey 4kg", 94.99, 4.0], ["Dusting Powder", 2.99, -1], ["Apple Hair creame Medium", 4.99, -1], ["Brazillian wool", 1.5, -1], ["Soul mate", 4.99, -1], ["Damatol Big", 8.99, -1], ["Damatol small", 2.99, -1], ["Bell Pepper Box", 15.99, -1], ["Round About", 3.99, -1], ["Puregro Ground Egusi 1oog", 1.79, -1], ["Puregro Chickpeas 500g", 1.49, 0.5], ["Puregro Ground Egusi 200g", 2.99, 0.2], ["Puregro Ground Ogbonno 130g", 3.29, 0.13], ["Puregro Ground Ogbonno 80g", 1.99, 0.08], ["Puregro Ijebu garri 500g", 1.19, 0.5], ["Puregro Jollof Basmatti 10kg", 14.99, 10.0], ["Puregro Jollof Basmati 5kg", 7.99, 5.0], ["Puregro Jollof rice seasoning 300g", 3.49, 0.3], ["Puregro Ofada Rice 1.5kg", 6.99, 1.5], ["Puregro Parsley", 0.79, -1], ["Puregro Popcorn Kernels 500g", 0.99, 0.5], ["Puregro Pounded Yam 1.5kg", 5.99, 1.5], ["Puregero Red Peanut 1kg", 4.99, 1.0], ["Puregro Sorrel 100g", 1.59, 0.1], ["Puregro Sorrel 1kg", 9.99, 1.0], ["Puregro Stockfish Head 300g", 4.99, 0.3], ["Puregro Whole Crayfish 40g", 1.79, 0.04], ["Puregro Whole Crayfish 70g", 2.99, 0.07], ["Puregro Whole egusi 100g", 1.79, 0.1], ["Puregro Whole Egusi 200g", 2.99, 0.2], ["Puregro Whole Ogbonno 130g", 3.29, 0.13], ["Vitamaklt Ginger 6pk", 8.5, -1], ["chivita", 2.5, -1], ["Leg Stone", 1.2, -1], ["Tiger blade", 0.99, -1], ["Red Onion 6kg", 9.0, 6.0], ["Catfish", 4.5, -1], ["Ripe Plantain half box", 27.0, -1], ["red potato", 4.3, -1], ["Ginger Box", 37.0, -1], ["Ginger 650g", 2.8, 0.65], ["Tilapia", 4.5, -1], ["Froyal hair", 15.99, -1], ["Crochet hair", 12.99, -1], ["B-Curl hair", 9.99, -1], ["Modern Queen", 7.99, -1], ["Awike Waves", 6.99, -1], ["U-mi hair", 5.99, -1], ["Big Xpression", 12.99, -1], ["Small Xpression", 4.99, -1], ["Kinky Hair", 5.99, -1], ["Kinky Big hair", 8.99, -1], ["French Curls", 9.99, -1], ["Boho/Ijoy Curls", 18.0, -1], ["Foax Locs", 15.0, -1], ["Passion Twist", 6.5, -1], ["Vietnamest hair", 11.99, -1], ["Rochet hair", 13.99, -1], ["Three D plus hair", 14.99, -1], ["SMP Hair", 10.99, -1], ["Joy Collections", 7.99, -1], ["Weavon Softer", 5.99, -1], ["Braidon hair", 14.99, -1], ["Darling Hair", 5.99, -1], ["Gold hair", 8.99, -1], ["Jojo Waves", 20.99, -1], ["Lush", 10.0, -1], ["Big Black lush", 13.99, -1], ["Adorable hair", 7.99, -1], ["Waves", 15.99, -1], ["Rainbow hair", 30.99, -1], ["Water leaf", 8.0, -1], ["Pluvera box", 45.0, -1], ["Pluvera Half Box", 23.0, -1], ["AH Sorrel Leaves", 3.49, -1], ["African Queen Sardines", 1.0, -1], ["Maltina", 13.99, -1], ["Jafro Chin Chin 250g", 1.99, 0.25], ["Milo Asian 400g", 3.99, 0.4], ["Hungryman noodle4s", 1.0, -1], ["Hungryman 3", 2.5, -1], ["Indomie Superpasck", 0.8, -1], ["Superpack 3", 2.0, -1], ["Red Peanut", 4.99, -1], ["Red Kidney Beans 2kg", 4.99, 2.0], ["Agbalumo 3", 2.5, -1], ["Mackerel/Titus 20kg", 108.0, 20.0], ["Salmon Boneless 600g", 6.9, 0.6], ["Salmon steaks 160g", 6.5, 0.16], ["Tilapia steaks 1kg", 4.5, 1.0], ["Uganda Pepper box", 58.0, -1], ["Uganda Pepper", 19.0, -1], ["Palm wine/ Emu", 2.7, -1], ["Acha/Fonio grain", 7.99, -1], ["Long Pepper", 6.0, -1], ["Bournvita Big", 10.99, -1], ["Lemon Juice", 1.2, -1], ["Half box of yam", 22.5, -1], ["AH Cocoyam fufu", 2.99, -1], ["AH ground crayfish 150g", 5.49, 0.15], ["Catfish Chunks smoked 300g", 10.99, 0.3], ["Meditrit-3", 5.5, -1], ["Beef", 9.99, -1], ["Grill combo", 100.0, -1], ["Ah Catfish Ring Smoked 300g", 10.49, 0.3], ["Ah Honey Beans 1.5kg", 6.99, 1.5], ["Dalgety Camomile&Lemongrass Tea 40g", 2.5, 0.04], ["Dalgety Cinnamon& pepeermint Tea", 2.5, -1], ["Dalgety Goodnight sleep Tea 40g", 3.2, 0.04], ["Dalgety Green &Ginger Tea 40g", 2.5, 0.04], ["Dalgety Ginseng & Ginger 9g", 2.99, 0.009], ["Dalgety Mango Leaf Tea 40g", 2.5, 0.04], ["Dalgety Moringa with ginger Tea 40g", 3.2, 0.04], ["Dalgety Neem Tea 40g", 2.5, 0.04], ["Dalgety Pure Green tea 40g", 2.5, 0.04], ["Dalgety Pure moringa tea 40", 3.2, -1], ["Dalgety Pure Peppermint Tea 40g", 2.5, 0.04], ["Dalgety Tumeric &Ginger Tea 40g", 3.2, 0.04], ["Dalgety Pure Tumeric tea 40g", 2.5, 0.04], ["Dalgety Tumeric &Black Pepper 40g", 2.5, 0.04], ["DR BBQ Seasoning 600g", 4.99, 0.6], ["DR Curry Goat seasoning 100g", 1.5, 0.1], ["Fufu Flakes 10k", 45.99, -1], ["Gino Peppered tomato paste", 0.6, -1], ["Haffinique Peanut 510g", 3.99, 0.51], ["Kawun/Potash 200g", 2.2, 0.2], ["Megamalt 6pk", 4.69, -1], ["Rajah Whole Black pepper", 2.99, -1], ["Raja Cinamon stick(CASSIA BARK)", 1.0, -1], ["RG Shitto Extra Hot 350ml", 5.49, -1], ["Spicity Chicken", 0.2, -1], ["Spicity Fried Rice", 0.2, -1], ["Tolly boy 20kg", 31.99, 20.0], ["Tondi peanut 510g", 3.99, 0.51], ["Ts Beef Stock", 3.99, -1], ["Ts Coconut Milk", 0.99, -1], ["Ts Instant Ginger Tea", 2.99, -1], ["Ts Jollof Rice Powder 1kg", 5.5, 1.0], ["Ts Lamb Powder", 4.2, -1], ["Ts White Kiney Beans", 1.99, -1], ["Lasor Peppersoup 10g", 0.2, 0.01], ["Scent Leave", 3.0, -1], ["Kokoro", 2.0, -1], ["Chicken wings", 23.99, -1], ["Turkey wings Box", 38.99, -1], ["Yam flour 10kg", 16.0, 10.0], ["Smoked mask 1kg", 3.99, 1.0], ["Tilapia 500-800g", 9.99, 0.8], ["shaki box(uncut) 10kg", 38.0, 10.0], ["chicken 1kg", 2.99, 1.0], ["Yellow Plantain Box", 52.0, -1], ["Yellow plantain quater", 13.0, -1], ["Okpei 50g", 5.99, 0.05], ["Ugba 100g", 2.99, 0.1], ["Prekese 100g", 1.99, 0.1], ["Fresh Eggs Crate", 6.5, -1], ["Blueband 250g(small)", 2.5, 0.25], ["Dates", 1.5, -1], ["Jack Mackerel/Kote Box", 58.0, -1], ["Jack Mckerel/Kote Half Box", 29.0, -1], ["Indomie Superpack box", 13.99, -1], ["Indomie Onion Superpack", 16.99, -1], ["Nkulenu Palm Soup Abemudro 780g", 4.99, 0.78], ["Bean flour 4kg", 12.99, 4.0], ["Puregro Cassva Dough 2kg", 3.99, 2.0], ["puregro chilli Powder", 0.89, -1], ["Puregro Zomi Palm Oil 1Ltr", 3.79, -1], ["TwoHues Extra Strong ginger 100g", 0.99, 0.1]];
+const PRODUCTS = [["Ayoola Cassava fufu 900g", 4.99, 0.9], ["Banga Red Palm Oil 4L", 14.99, -1], ["Puregro Easy cook Rice 5kg", 5.99, 5.0], ["Puregro Golden Sella Basmati Rice 10kg", 17.99, 10.0], ["POA Peeled Beans 1.5kg", 4.99, 1.5], ["POA Peeled Beans 4kg", 10.99, 4.0], ["Plantain fufu 500g", 5.99, 0.5], ["Unripe Plantain box 20kg", 48.0, 20.0], ["Milo Sachet Refill 400g", 5.99, 0.4], ["Turkey Mid wings 5kg", 19.5, 5.0], ["Cow Snout 1kg", 4.99, 1.0], ["Kawun/Potash 90g", 1.5, 0.09], ["Ripe Plantain box 20kg", 55.0, 20.0], ["Banga Sticks", 2.3, -1], ["TS| Coconut Peanut 330g", 3.99, 0.33], ["Bournvita 500g", 6.5, 0.5], ["Bournvita 900g", 10.99, 0.9], ["Cow foot 1kg", 3.99, 1.0], ["Achi Soup Thickner 70g", 1.79, 0.07], ["Mama\u2019s Choice Plantain Fufu 1.5kg", 12.5, 1.5], ["Frozen wings 1kg", 5.99, 1.0], ["Frozen Mid wings(cut) 10kg", 45.3, 10.0], ["Jolly Chicken thigh 2kg", 4.99, 2.0], ["Beef Reed (Abodi) 1 kg", 3.99, 1.0], ["Beef Stripe/Shaki 1kg", 4.99, 1.0], ["POA Black eye beans 1.5kg", 4.49, 1.5], ["Boneless Cowfoot 1kg", 7.99, 1.0], ["Cow Mask 1kg", 4.99, 1.0], ["Cow snout 1kg", 4.5, 1.0], ["Ground Crayfish 70g", 2.79, 0.07], ["Derica Tomato paste 400g", 1.85, 0.4], ["Peanut/Groundnut 500g", 4.99, 0.5], ["Eniola poundo 1.5kg", 7.99, 1.5], ["Eniola Poundo Yam 4kg", 16.99, 4.0], ["Turkey Wings(Uncut) 5kg", 19.5, 5.0], ["Goat meat 1kg", 9.99, 1.0], ["Golden Morn 300g", 2.5, 0.3], ["Ah Whole Egusi/Melon 100g", 1.69, 0.1], ["Semovita 2kg", 3.99, 2.0], ["Ijebu Garri 1.5kg", 3.99, 1.5], ["Knorr Chicken (8gx45)", 2.8, -1], ["Knorr cubes (8gx45)", 1.99, -1], ["Maggi Star 400g", 1.99, 0.4], ["Nido Powdered milk 400g", 5.99, 0.4], ["Puregro whole Nutmeg 100g", 3.29, 0.1], ["Ofada Rice 1.5kg", 4.99, 1.5], ["Ofada Rice 4kg", 12.99, 4.0], ["Mild Curry 140g", 2.5, 0.14], ["Onga Seasoning Stew 50g", 0.69, 0.05], ["Pepper soup spice 100g", 2.4, 0.1], ["Dehydrated Periwinkle 300g", 9.0, 0.3], ["AH Poundo Iyan 8kg", 26.99, 8.0], ["Royco powder 400g", 1.99, 0.4], ["Suya Spice 100g", 2.7, 0.1], ["Tropical Sun chicken stock powder 1kg", 3.99, 1.0], ["POA White Garri(Ghana) 4kg", 9.99, 4.0], ["Puregro Honey Beans 4kg", 16.99, 4.0], ["Peeled Beans 4kg", 9.99, 4.0], ["AH Poundo Iyan 1.5kg", 5.49, 1.5], ["Puregro Peeled Beans 1.5kg", 4.99, 1.5], ["Hake Fish 10kg Box", 46.0, 10.0], ["Turkey Mid-Wings 1kg", 5.99, 1.0], ["AH Iru Woro 80g", 1.99, 0.08], ["Ayoola Poundo Yam 1.8kg", 7.99, 1.8], ["Banga Red Plam Oil 2 litres", 7.99, -1], ["Semovita 5kg", 9.99, 5.0], ["Peacock Easy cook Rice 10kg", 16.99, 10.0], ["Peacock Easy cook Rice 20kg", 33.99, 20.0], ["Goat meat 1kg", 9.99, 1.0], ["Turkey mid wings 10kg", 38.99, 10.0], ["Smoked turkey 1kg", 6.99, 1.0], ["Frozen hen legs", 9.99, -1], ["Chicken drumsticks", 4.99, -1], ["Chicken Thigh 3kg", 10.99, 3.0], ["Yam Flour 3.5kg", 8.99, 3.5], ["Yam Flour 1.5kg", 2.99, 1.5], ["frozen Catfish 2.5kg Pack", 9.99, 2.5], ["Mackerel/Titus 5kg Box", 27.0, 5.0], ["Golden Morn 900g", 4.99, 0.9], ["Puregro Easycook rice 10kg", 10.99, 10.0], ["Puregro Golden Sella Basmatti Rice 5kg", 9.49, 5.0], ["Ijebu Garri 1.5kg", 3.99, 1.5], ["yellow Garri 20Kg", 29.99, 20.0], ["Bread", 2.0, -1], ["Okro 100g", 1.0, 0.1], ["Okro 500g", 4.5, 0.5], ["Green Chili Pepper", 4.0, -1], ["Smoked Panla", 5.99, -1], ["Plantain chips", 1.0, -1], ["Farina 1.5kg", 5.99, 1.5], ["Ghana palmnut soup 800g", 3.99, 0.8], ["Puregro Golden Sella Basmatti rice 2kg", 4.49, 2.0], ["Ayoola poundo 900g", 4.99, 0.9], ["Semovita 1kg", 2.0, 1.0], ["Indomie super pack", 13.99, -1], ["Peak Milk 900g", 10.99, 0.9], ["Ofada Rice 1.5kg", 4.99, 1.5], ["Ofada Rice 4kg", 12.99, 4.0], ["Vegetable Oil 5L", 8.99, -1], ["Hake Fish 10kg Box", 46.0, 10.0], ["Turkey Mid-Wings 1kg", 5.99, 1.0], ["Cow tail", 13.0, -1], ["Cow foot 2kg", 6.99, 2.0], ["Ayoola Pounded Yam 4.5kg", 16.99, 4.5], ["Milo 1.8kg", 18.99, 1.8], ["Egusi/Melon 400g", 6.99, 0.4], ["Yam 1kg", 4.0, 1.0], ["Sweet Potatoes 1kg", 4.99, 1.0], ["Iwisa 2Kg", 3.2, 2.0], ["Iwisa 5kg", 8.5, 5.0], ["Iwisa 10kg", 15.99, 10.0], ["Semolina 10kg", 19.99, 10.0], ["Onions 4kg", 3.0, 4.0], ["Chicken 10kg", 20.99, 10.0], ["Goat meat with skin 1kg", 20.99, 1.0], ["Liver 1kg", 3.99, 1.0], ["Yam Flour 5kg", 12.99, 5.0], ["Yam Flour 10kg", 20.0, 10.0], ["family Combo", 69.99, -1], ["Grill combo", 100.0, -1], ["Proteinm combo", 105.0, -1]];
 
 const CATALOG = `Ayoola Cassava fufu 900g|£4.99
 Banga Red Palm Oil 4L|£14.99
@@ -181,16 +183,16 @@ Cow Snout 1kg|£4.99
 Kawun/Potash 90g|£1.50
 Ripe Plantain box 20kg|£55.00
 Banga Sticks|£2.30
-TS| Coconut Peanut 330g|£3.99
+TS Coconut Peanut 330g|£3.99
 Bournvita 500g|£6.50
 Bournvita 900g|£10.99
 Cow foot 1kg|£3.99
 Achi Soup Thickner 70g|£1.79
-Mama’s Choice Plantain Fufu 1.5kg|£12.50
+Mama's Choice Plantain Fufu 1.5kg|£12.50
 Frozen wings 1kg|£5.99
 Frozen Mid wings(cut) 10kg|£45.30
 Jolly Chicken thigh 2kg|£4.99
-Beef Reed (Abodi) 1 kg|£3.99
+Beef Reed (Abodi) 1kg|£3.99
 Beef Stripe/Shaki 1kg|£4.99
 POA Black eye beans 1.5kg|£4.49
 Boneless Cowfoot 1kg|£7.99
@@ -204,7 +206,6 @@ Eniola Poundo Yam 4kg|£16.99
 Turkey Wings(Uncut) 5kg|£19.50
 Goat meat 1kg|£9.99
 Golden Morn 300g|£2.50
-Ah Whole Egusi/Melon 100g|£1.69
 Semovita 2kg|£3.99
 Ijebu Garri 1.5kg|£3.99
 Knorr Chicken (8gx45)|£2.80
@@ -230,956 +231,64 @@ Puregro Peeled Beans 1.5kg|£4.99
 Hake Fish 10kg Box|£46.00
 Turkey Mid-Wings 1kg|£5.99
 AH Iru Woro 80g|£1.99
-Asiko Plantain Crisps Honey Roasted 50g Box 24|£20.49
-Plantain Crisps sweet chilli 50g (box of 24)|£20.49
-Asiko Plantain Crispy L/Salted 75g (box of 24)|£20.49
-Asiko Plantain Crisps unsalted (box of 24)|£20.99
 Ayoola Poundo Yam 1.8kg|£7.99
-Banga Red Plam Oil 2 litres|£7.99
-Cerelac Honey and Wheat with milk 1kg|£8.99
-Cerelac Mixed fruits and wheat with milk 1kg|£8.99
-Checker Custard Vanilla flavour 2kg|£7.99
-Checker Custard Banana Flavour 2kg|£7.99
-Checker Custard Powder Vanilla 400g|£2.99
-Derica double concentrate Tomato paste 70g|£0.60
-Derica double concentrate Tomato paste 850g|£3.60
-Gino party jollof Tomato seasoning mix 50g|£0.60
-Gino peppe & onion Tomato seasoning mix 50g|£0.60
-Gino Tomato mix 55g|£0.60
-Golden penny Spaghetti 500g|£1.50
-Grandios Pap brown 500g|£2.35
-Indomie Ghana Chicken Noodles 70g  (box of 40)|£10.99
-Grandios Pap White 500g|£2.99
-Natural Palm Drink 600ml|£3.00
-Golden Penny Spaghetti 500g|£1.45
-Grandios Pap Brown 500g|£2.30
-Indomie Nigerian Chicken Noodles 70g (box of 40)|£8.99
-Knorr Aromat All Purpose Seasoning 90g|£1.99
-Lady B Custard Powder 1.6kg|£6.50
-Lion Brand Curry Powder 25g|£1.00
-Lion Brand Dried Thyme 10g|£1.00
-Maggi star Cubes 400g|£2.20
-Nkulenu Palm Soup 390g|£2.20
-Ola Ola Pounded Yam 1.8kg|£14.50
-Ola Ola Pounded Yam 4.5kg|£34.99
-Peak Instant Whole Milk Powder 2.5Kg|£26.50
-Peak Instant Whole Milk Powder 400g|£5.99
-Tasty Tom Jollof Mix Paste|£0.60
-Puregro Semolina Fine|£7.49
-Puregro Ijebu garri 1.5kg|£2.99
-Puregro Ijebu garri 4kg|£6.99
-Puregro 100% Whole Wheat Sharbati Chakki Atta 10Kg|£10.99
-Puregro All Purpose Seasoning 100g PM 79p|£0.79
-Puregro Aroma Basmati Rice 2kg PM £3.99|£3.99
-Puregro Aroma Platinum Extra Long Grain Basmati Rice 10kg|£16.99
-Puregro Aroma Platinum Extra Long Grain Basmati Rice 5kg|£8.99
-Puregro Banku Mix Dough 1kg PM £2.49|£2.49
-Puregro Bay Leaves 15g PM 79p (Box of 10)|£0.79
-Puregro Bay Leaves 30g PM|£1.99
-Puregro Bean Flour 1.5kg PM|£4.99
-Puregro Black Eye Beans 1.5kg|£3.49
-Puregro Black Eye Beans 4kg|£7.99
-Puregro Black Pepper Fine 100g|£1.39
-Puregro Black Pepper Whole 100g|£1.69
-Puregro Brown Basmati Rice 2kg|£3.99
-Puregro Brown Basmati Rice 5kg|£8.99
-Puregro Brown Beans 1.5kg|£7.99
-Puregro Brown Beans 4kg|£16.99
-Puregro Roasted Peanut 500g|£3.99
-Tom tom|£1.99
-Tigernut|£3.99
-Donkwa|£2.50
-Bread|£2.00
-Okro 100g|£1.00
-Okro 500g|£4.50
-Coke or Fanta|£1.50
-Shoko|£2.00
-Green Chili Pepper|£4.00
-yellow Garri 20Kg|£29.99
-Coconut|£1.00
-frozen Pomo Ijebu|£5.40
-Iwisa 2Kg|£3.20
-Simas Butter|£2.00
-Chin Chin|£2.50
-Tura Soap pack of 3|£2.50
-Dudu Osun|£1.10
-Delta Soap|£2.00
-Super Malt Pk of 12|£17.99
-Malta guiness pack of 24|£13.99
-Malta guineas 1can|£1.00
-Smoked Panla|£5.99
-Plantain chips|£1.00
-Farina 1.5kg|£5.99
-Spicity jollof & stew 10g|£0.20
-Robb|£1.20
-Ghana palmnut soup 800g|£3.99
-Palm soup base 390g|£2.40
-Fufu pack of 5|£6.50
-Fufu 1|£1.30
-Puregro Golden Sella Basmatti rice 2kg|£4.49
-Pumpkin leaves|£2.00
-Ayoola poundo 900g|£4.99
-Semovita 1kg|£2.00
-Honeywell whole wheat meal 4.75kg|£9.99
-Honeywell whole wheat meal 1.8kg|£4.99
-Indomie super pack|£13.99
-Olu olu Plantain chips green|£17.99
-Peak Milk 900g|£10.99
-Puregro Cassava Dough|£1.99
-Puregro Corn Dough|£1.99
-Puregro Cinnamon Powder 100g|£1.29
-Puregro Golden Sella Basmatti Rice 5kg|£9.49
-Puregro Roasted Peanut 330g|£2.99
-Puregro Yellow Corn Dough 1kg|£2.49
-Fanta Crate of 24|£28.99
-Rani Orange crate of 24|£14.99
-Rani crate Mango of 24|£14.99
-Rani 1|£0.80
-Iwisa 5kg|£8.50
-Indomie 3pcs|£1.00
-Amstel Malt|£13.99
-Guineas small stout|£2.50
-Ghana Indomie|£12.50
-Yam Flour 3.5kg|£8.99
-Yam Flour 1.5kg|£2.99
-frozen Catfish 2.5kg Pack|£9.99
-Mackerel/Titus 5kg Box|£27.00
-Jack Mackerel/KoteFish|£3.50
-Golden Morn 900g|£4.99
-Red Fish|£5.99
-frozen Bitter Leaves (Ndole)|£2.00
-Atieke|£2.20
-Pika Bobolo 700g|£3.99
-Cassava Tubers Peeled|£2.50
-Puregro Easycook rice 10kg|£10.99
+Banga Red Palm Oil 2 litres|£7.99
+Semovita 5kg|£9.99
+Peacock Easy cook Rice 10kg|£16.99
+Peacock Easy cook Rice 20kg|£33.99
 Turkey mid wings 10kg|£38.99
 Smoked turkey 1kg|£6.99
 Smoked turkey wings 5kg|£29.99
 Frozen hen legs|£9.99
 Chicken drumsticks|£4.99
 Chicken Thigh 3kg|£10.99
-Pluvera Whole Hens|£4.99
-Whole pounded Oat flour|£4.99
-Jumbo chicken seasoning|£5.00
-Tropical SunGolden Sella Basmati Rice|£10.99
-Tropical SunGolden Sella Basmati Rice 10kg|£19.99
-Tropical SunGolden Sella Basmati Rice 20kg|£38.99
-Garlic|£2.80
-Couscous|£4.99
-Evaporated Peak milk|£1.80
-Kulikuli|£1.99
-Titus Sardine|£1.50
-vamino Soy Drink|£1.60
-Vamino Soy Drink Pk of 6|£9.00
-AH Shito Extra Hot 350ml|£5.49
-Beef Shin|£10.99
-Pure Heaven Wine|£2.99
-Maggi Crayfish|£4.40
-Tumeric 300g|£2.80
-Nido 2.5Kg|£25.50
-Oxford Cabin Biscuit|£1.99
-Dunn River Cornmeal Coarse 1.5kg|£3.99
-Olu Olu Palm Oil 500ml|£3.50
-Konkonte Flour 1Kg|£2.49
-maggi Liquid Hot|£1.50
-Cocoyam Fufu|£4.99
-Tetmosol Soap Pk of 6|£7.50
-Kilishi 70g|£3.99
-Blue Band 450g|£3.99
-Shea Butter|£5.50
-Blueband small|£2.30
-Kaddu|£4.00
-Matoke|£4.00
-Oziza|£2.00
-Curry Leaf|£1.30
-Oha Leaf|£2.00
-Aboniki|£1.50
-Frozen Peeled Garlic|£3.99
-Cocoyam|£3.20
-Rajah Haloli|£3.80
-okra|£8.50
-Fenn Greekseed|£2.30
-Green Cardamon|£2.20
-Fried Onion|£2.50
-Garam Masala|£2.50
-Masrass Curry Powder|£2.50
+Yam Flour 3.5kg|£8.99
+Yam Flour 1.5kg|£2.99
+frozen Catfish 2.5kg Pack|£9.99
+Mackerel/Titus 5kg Box|£27.00
+Golden Morn 900g|£4.99
+Puregro Easycook rice 10kg|£10.99
+Puregro Golden Sella Basmatti Rice 5kg|£9.49
+yellow Garri 20Kg|£29.99
+Bread|£2.00
+Okro 100g|£1.00
+Okro 500g|£4.50
+Green Chili Pepper|£4.00
+Smoked Panla|£5.99
+Plantain chips|£1.00
+Farina 1.5kg|£5.99
+Ghana palmnut soup 800g|£3.99
+Puregro Golden Sella Basmatti rice 2kg|£4.49
+Ayoola poundo 900g|£4.99
+Semovita 1kg|£2.00
+Indomie super pack|£13.99
+Peak Milk 900g|£10.99
 Vegetable Oil 5L|£8.99
-Dudu Osun Pk of 6|£6.50
-Delta Soap Pk|£11.99
-Supermalt Pk of  12|£16.99
-Farouz Pk of 24|£13.99
-Moimoi Leave|£2.00
-Ducros 6|£5.00
-Dunns River Coconut Milk|£1.60
-Curry goat seasoning|£1.20
-Fish Seasoning 100g|£1.20
-Fayrouz Pineapple drink|£1.00
-Semovita 5kg|£9.99
-Jubilee Sunflower 1Ltr|£2.10
-Jubilee Sunflower Oil 5Ltr|£8.99
-TS Sunfloweer Oil|£8.99
-Peacock Easy cook Rice 10kg|£16.99
-Peacock Easy cook Rice 20kg|£33.99
-Amigo Apple/strawberry box of 24|£13.99
-Amigo|£0.60
-Badia Basil 23.5g|£1.80
-Badia Onion Powder|£2.50
-Badia Chia Seed|£0.90
-Badia Chia Seeds 623.7g|£9.99
-Badia Iodized Salt 1.13Kg|£2.99
-Badia Jamaican Style Curry|£6.99
-Badia Minced Onion 113.4g|£2.50
-Badia Nutmeg Whole|£0.90
-Badia Oregano|£5.99
-Badia Pink Himalaya Salt|£5.50
-Badia Sea Salt Coarse 1kg|£4.99
-Badia Sorreal (Flor de Jamaican)|£4.99
-Badia Vinegar and Sea salt seasoning|£2.99
-Badia White Pepper ground|£0.65
-Bragg Apple Cider Vinegar|£5.99
-Lespaon Sardine|£1.30
-Dunn’s River  Caribbean Hot curry powder 500g|£4.99
-Dunn’s River Caribbean Mild Curry 500g|£4.99
-Dunn’s River|£4.99
-Peacock Easy cook Rice 5kg|£8.99
-Peacock Golden Sella Rice 10kg|£19.99
-Cloves whole 40g|£1.19
-Puregro Farina (Potato Starch) 4kg|£8.99
-Puregro Kokonte flour 1kg|£2.49
-Puregro Kokonte 3.5kg|£6.49
-Puregro Linseed Brown 100g|£0.80
-Puregro Linseed Brown 300g|£2.99
-Puregro Plantain Fufu|£5.99
-Puregro Plantain fufu 4Kg|£15.99
-Puregro Sorrel Hibiscus 250g|£3.49
-Puregro whole green Cardamom 50g|£2.80
-Broom|£3.00
-Cocosamba 100ml|£1.50
-Guinness stout small box of 24|£45.99
-Guiness Stout 600ml|£3.99
-Jekonmo 100ml|£1.50
-Orijin 750ml|£12.50
-Sponge net|£1.20
-Trophy 600ml|£2.70
-Bitter leaf|£3.00
-kerala|£4.30
-corn|£0.70
-Ginger|£2.80
-Plantain|£2.90
-Lemon|£3.90
-Pawpaw/Papaya|£5.50
-Garden egg|£9.50
 Cow tail|£13.00
 Cow foot 2kg|£6.99
-Bag|£0.65
 Ayoola Pounded Yam 4.5kg|£16.99
-indomie Peppersoup|£9.99
-Chana Masala 100g|£1.50
-Maggi Star 400g (3)|£5.00
-Chicken Masala Powder|£1.50
-Coriander Powder 100g|£0.79
-Garam Masala 100g|£1.50
-Kasori Methi  100g|£1.60
-Puregro Cassava flour 3.5kg|£6.49
-Cinnamon Sticks 150g|£3.50
-Cinnamon Sticks 60g|£1.69
-Supermalt pack of 6|£6.50
-Supermalt pack of 24|£19.99
-Supermalt 330ml (12)|£12.99
-Supermalt|£1.50
-Ghana fresh  palm soup 400g|£2.99
-Pepsi 250ml|£0.80
-Mirinda|£1.00
-Sour soup Tea|£4.99
-Ugu|£2.00
-Peanut paste 500g|£3.99
-Catfish cutlet 300g|£10.99
-AH Panla Fish Whole 300g|£9.99
-Jolly Chicken 1kg|£2.99
-Dark Red Kidney Beans 1.5kg|£3.99
-Kala Chana 1.5kg|£2.99
-Puregro Moringa Tea 40g|£1.79
-Pink Peanut Jumbo|£1.59
-Red Split Lentils|£2.99
-Rice Flour 1.5Kg|£2.69
-Rice Flour 4kg|£6.50
-Sorrel & Ginger Tea 40g|£1.79
-Urid Dal 1.5Kg|£4.39
-7Up pack of 24|£17.99
-Malta guineas 3 cans|£2.50
-Pan orange pack|£2.99
-Oloyin beans 20kg|£56.00
-Ijebu Gari 20kg|£27.99
-Amigo Pk of 8|£3.99
-Boom Shack-Lak Chipotle|£2.99
-plantain chips 3|£2.50
-Grandious Pap Yellow 500g|£2.70
-Kurkure Chili Chakata 68g|£0.50
-Chili Kurture 72g|£0.55
-Kurture  Green Chutney 68g|£0.50
-Kurture Munch Masala 75g|£0.50
-Olu Olu Poundo 8kg|£31.99
-Olu Olu Poundo 4kg|£16.99
-Puregro Black Eye Beans 25kg|£42.99
-Honey Beans 20kg|£48.00
-Ghana Gari 3.5Kg|£6.99
-Milo Refill 800g|£9.99
-Maaza 200ml|£0.70
-Maaza Tetra 125ml|£0.50
-Ducros 20g|£1.00
-Olu Olu Plantain Chips yellow|£17.99
-All Purpose Seasoning 300g|£1.99
-Puregro Aromatic Basmati Rice 10Kg|£16.99
-Barbeque Seasoning 100g|£0.79
-Puregro Chicken Seasoning 100g|£0.79
-Chili and Lemon Seasoning 100g|£0.89
-Easy Cook Rice 2Kg|£2.69
-Honey Beans 1.5kg|£5.99
-Jerk Seasoning 100g|£0.89
-Puregro Pounded Yam 4kg|£13.99
-Indomie Onion Pk|£9.99
-Box of Yam|£55.00
-Yam 1kg|£4.00
-Ghana taste Peanut Butter|£2.99
-Hot Pepper/Rodo|£16.00
-Sweet Potatoes 1kg|£4.99
-Yellow Croaker 3kg|£15.99
-Red Snapper|£5.99
-Mirgal  Myan|£5.99
-Rohu Myanmar|£4.20
-Boal BD|£8.99
-Ayr BD|£11.99
-Dathi Fish|£5.99
-Sprats Fish|£5.99
-Hake Fish|£4.99
-Iwisa 10kg|£15.99
-Red Bull|£1.50
-TS Tamarind Drink|£1.50
-Green Chili|£6.00
-Bitter cola|£5.00
-Mazoe|£6.99
-Meat pie 3|£5.00
-Meatpie|£2.00
-Dry Pomo Ijebu 500g|£4.50
-Chicken feet|£3.99
-Yellow Gari 1.5kg|£3.49
-Zobo|£3.50
-Kadoo|£5.99
-Kerela|£5.80
-Chopped Okra|£1.99
-Frozen Scotch bonnet|£2.99
-Molokhia ewedu(Frozen)|£1.50
-Miondo Cassava Sticks|£2.99
-Baracuda 1kg|£4.70
-Baracuda Steak 1kg|£5.99
-Small Sprat 1kg|£5.99
-Turkey Gizzard|£4.99
-Badia Sea Salt 269g|£1.99
-Frozen okra|£1.50
-Derica 210g|£1.30
-Orijin 200ml 2|£6.50
-Orijin Bitters 1|£3.50
-Alomo Bitters 2|£5.00
-Alomo BItters|£2.99
-Snail|£18.99
-Mamas Choice Plantain fufu 4kg|£29.99
-Vita malt Classic Pack of 6|£7.50
-Vitamalt|£1.50
-Supermalt  330ml Pack of 12|£12.99
-Bama 3885ml|£4.00
-Limca Can|£0.80
-Frozen Ugu Leaves 500g|£2.00
-Twisted Spaghetti|£1.50
-Tomatoes Box|£18.99
-Tomatoes|£3.30
-Rodo/Hot Pepper Box 3kg|£55.00
-Dunns River Black eye beans 400g|£0.79
-Dunns River Butter Beans 400g|£0.79
-Dunns River Dried Thyme 200g|£4.99
-Encona Jamacan Jerk BBQ sauce 220ml|£1.70
-Encona Hot Pepper Sauce|£1.99
-Encona Thai Chilli Sauce 142ml|£1.70
-Honeywell Semolina 1.8kg|£3.99
-Maggi Masala Noodles|£0.25
-Onga Classic 40g|£0.60
-Ajinomoto 2|£1.00
-Benny 2|£1.00
-Assorted mixed meat|£6.99
-Periwinkle|£7.99
-Cocoyam/Edos|£4.99
-Shito 160g|£3.50
-RG Shito Mild sauce 160ml|£3.49
-Popcorn|£2.99
-Pawpaw|£6.00
-Long Pepper/Tatashe Box|£20.99
-Chicken 10kg|£20.99
-Grounded Egusi 200g|£2.99
-Dried Shrimp|£4.29
-Shrimps peeled|£2.99
-Goat meat with skin 1kg|£20.99
-Kitchen Glory roll of 10|£2.50
-Grace Mighty Malt|£1.50
-Onga Classic 8g|£0.15
-Onga Stew 40g|£0.20
-Chilli Powder 100g|£0.89
-Curry Powder Hot/Mild 100g|£0.89
-Lemon Pepper 100g|£1.29
-Pimento Ground|£1.50
-Crushed Chili 100g|£1.29
-Ghana gari 1.5kg|£3.29
-Puregro Golden Basmati 20kg|£34.99
-Titus/Mackerel Fish|£6.00
-Olu Olu Palm Oil 2Kg|£9.99
-Olu Olu Pam oil 1Ltr|£5.50
-Olu Olu Palmoil 4Ltr|£17.99
-Cerevita|£6.99
-Maputi pk of 20|£7.99
-Cooked Rice|£5.50
-Ayer  Fish|£8.99
-Crabs Blue 700g|£5.99
-Pabda 500g|£4.99
-Tengra 500g|£5.99
-Koi|£3.50
-Magur Desi 500g|£3.50
-Keski Block 300g|£2.50
-Desi Puti Block|£2.50
-Baspata Block 300g|£3.50
-Chilapata 300g|£3.50
-De Rica Double Concentrate Tomato Paste 210g (Box of 24)|£1.27
-De Rica Double Concentrate Tomato Paste 400g (Box of 24)|£1.73
-Puregro Gold Instant Ginger Tea 360g|£2.99
-Sky ALM 200ml (pack of 24)|£2.60
-Sky C/G (Pack of 24)|£0.98
-Sky Cubes CHK Green (48x8g)|£2.60
-Sky Mrnd 250ml (Pack of )|£0.75
-Sky Sponge 250ml (Pack of 24)|£1.00
-Sky  GMC (Box 0f 24)|£0.60
-Puregro Easy Cook Rice 10kg PM|£10.99
-Puregro Easy Cook Rice 2kg PM|£2.69
-Puregro Cinnamon Tea 40g PM|£1.79
-Puregro Hausa Koko 1kg PM|£4.99
-Puregro Lemongrass Tea 40g PM|£1.79
-Puregro Peppermint Tea 40g PM|£1.79
-Puregro Pimento (All spice) Whole|£1.69
-Puregro Popcorn kernels 2kg|£5.00
-Saxa Table Salt|£1.73
-Sky GMB|£0.81
-Peacock Yellow 10kg|£20.50
-Lal quila Rice 2kg|£4.99
-Lal Quila Rice 5kg|£11.99
-Lal Quila Rice 10kg|£21.99
-Cinnamon Tera|£1.79
-Dalgety Pure Pepermint Tea|£1.79
-Puregro Popcorn Kernels|£2.79
-Guiness Malta Bottle|£1.00
-Mirinda Box|£16.99
-Pfuko|£1.70
-Mayonnaiose 750g|£6.99
-Yam Box|£45.00
-Whole Pimento|£1.99
-Dunns River Barbeque seasoning|£1.50
-Dunns River Everyday Seasoning|£1.50
-Dunns River Oxtail Seasoning|£1.50
-Tolly Boy 10kg|£16.99
-Ayoola Cassava Fufu 1.8kg|£6.99
-Badia Jalapeno|£2.50
-Gino Curry Powder|£0.20
-Honeywell Semolina 5Kg|£9.99
-Puregro Aroma PlatinumExtra Long Rice 2kg|£3.99
-Puregro Jollof Rice Seasoning 100g|£1.29
-Puregro Oregano|£0.79
-Puregro Parsely 80g|£1.49
-AH Yellow Corn Dough 2kg|£4.99
-Schwepps (24)|£13.50
-Unifresh Banku Mix 500g|£3.50
-Unifresh Fufu 4kg|£9.99
-Unifresh Tom Brown 500g|£3.50
-Ofada Oil 2Ltr|£5.99
-Yellow Rodo|£10.00
-Ogiri 50g|£5.99
-stock fish head|£4.50
-Lipton|£1.50
-Unripe Plantain chips|£4.50
-Egusi/Melon 400g|£6.99
-De rica Double Concentrate 70g Box of 50|£29.00
-Nido Powdered Milk 900g|£10.99
-Yellow Pepper|£10.00
-Corn Dough 2kg|£4.99
-Cassava Dough 2kg|£4.99
-AH Chin Chin 500g|£3.99
-Yam Flour 10kg|£20.00
-HoneyComb|£6.99
-AH Ground Egusi/Melon 400g|£5.89
-Plantain box|£45.00
-Tatashe|£5.70
-tomatoes 1/Kg|£2.20
-Tilapia 800g-1200g (big)|£10.99
-Xpression Super braid|£9.00
-Xpression Rich braid|£5.00
-Peacock Yellow 5kg|£11.99
-Tolly Boy 5kg|£9.50
-Olu Olu Poundo 1.2kg|£5.99
-schweppes Box(24)|£13.99
-okra Box 4kg|£32.00
-Okra Half Box|£16.00
-Ades Chips Pk|£5.50
-Cashew Nut 500g|£7.99
-Wake Leaf|£2.70
-Simas Butter 3|£5.00
-Bonga Fillet|£4.50
-Ukwa|£4.50
-Peppersoup Spice|£1.79
-Dried Anchoves|£3.50
-Dried Prawn|£3.60
-Dried Baracuda|£5.50
-Stockfish Cutlet|£5.50
-Chapman|£2.00
-Fresh Tumeric|£16.00
-5kg Hake|£23.00
-Sardine 10kg|£30.00
-5kg Chicken|£10.50
-Red Fish box(7kg)|£36.00
-Scent Leaves (Nchanwu)|£3.50
-Atteke 500gm|£44.00
-Snail Jombo 907gm|£225.00
-Ayoola Poundo Yam 9.1Kg|£34.99
-Gino Paty Jollof box|£25.99
-Graceco Yellow Pap|£3.20
-Indomie Hungryman|£13.99
 Milo 1.8kg|£18.99
-Bay Leaves 100g|£3.99
-Ijebu garri 10kg|£14.00
-Puregro Garlic Powder 300g|£1.89
-Puregro Ginger ground 100g|£0.99
-Puregro Paprika|£1.00
-Puregro Onion Powder|£0.99
-Puregro Rosemary 150g|£1.49
-Puregro Tumeric 300g|£1.49
-Puregro Tumeric 100g|£0.69
-Yam Flour(Elubo) 20kg|£58.00
-Tete|£2.50
-Soko|£2.00
-Uziza|£2.00
-Oha|£2.00
-Okazi(Frozen)|£2.00
-Abacha|£9.99
-Chicken gizzard|£3.99
-Tamarind|£2.99
-Grounded Egusi|£5.99
-AH Bonga Fillets|£3.49
-Catfish Fillets 100g|£3.99
-Catfish Fillets 400g|£13.99
-AH Grounded nut 100g|£1.79
-AH Hausa Koko 500g|£3.99
-AH Herring Fillet|£3.79
-AH Large Snails 300g|£10.99
-AH Medium Snail 300g|£9.99
-AH Oat Poundo|£3.99
-Frozen Brown Ogi 300g|£2.00
-Frozen Ogi White 300g|£2.00
-Frozen Ogi Yellow 300g|£2.00
-AH Plantain Fufu 1.5kg|£5.99
-AH Stockfish Cod 150g|£5.49
-AH Stockfish Steak 100g|£3.79
-AH Whole Whole Egusi|£5.89
-AH Cameroon Pepper 60g|£1.79
-Blue Ocean Salt Fish 200g|£2.50
-DR Ground Nutmeg|£2.99
-Exotic Corn Dough|£4.99
-Chivita Juice|£2.50
-Ghana Best Palmnut Soup 400g|£2.10
-GB Palmnut soup 800g|£4.00
-GB Peanut Butter 400g|£2.50
-GB Abemudro Palmnut Soup 800g|£4.00
-Ghana Fresh Palmnut Creame 800g|£4.90
-Jafro Chin Chin 900g|£6.50
-Jafro Chin Chin Coconut 250g|£2.50
-Cerelac Wheat with Milk|£8.99
-Pure  HeavenWine Box of 12|£28.99
-Sankofa Fufu 2kg|£12.99
-Sea Moon Ofada 5kg|£12.99
-Setara Golden Sella 10kg|£19.99
-Setara Golden Sella 2kg|£4.50
-Setara Golden Sella Basmati Rice 20kg|£38.99
-Satara Golden Sella Basmati Rice 5kg|£10.99
-TS Adobo Seasoning 100g|£1.20
-TS Aroma Stock Powder|£3.99
-TS Butter Beans 500g|£1.99
-TS Chicken Seasoning 100g|£1.00
-TS Chicken Stock Powder 1kg|£3.99
-TS Crayfish Stock 1kg|£5.99
-TS Dries Mixed herbs 30g|£1.20
-TS Hominy Yellow Corn 500g|£1.50
-TS Plantain Crisps Chilli 45og|£4.99
-AH Yellow Garri 20kg|£32.99
-AH Ijebu Garri 3.5kg|£6.69
-AH Ghana Garri|£6.69
-Thai Pearl Jasmine Rice 10kg|£13.99
-AH Red Palm OIl 500ml|£1.99
-AH Palm Oil 1L|£3.75
-AH Palm Oil 2L|£6.99
-AH Zomi Palm Oil 500ml|£1.99
-AH Zomi Palmoil 2L|£6.99
-AH Pounded Iyan 4kg|£13.99
-AH Plantain Fufu|£13.99
-AH Plantain Fufu 680g|£2.99
-Ts Coconut Peanut (330g*24)|£89.99
-Ts Coconut Peanut 50g|£1.20
-TS Coconut Peanut 165g|£2.99
-Peacock Basmatti 4kg|£10.99
-Ginger small|£1.50
-Gino 400g|£1.99
-Gino 210g|£1.20
-Ayoola Plantain Flour|£7.99
-Checkers Custard Banana Flavour 400g|£2.99
-Puregro Creamy Peanut Butter 1kg|£2.99
-Puregro Creamy Peanut butter 454g|£1.79
-Close Up Tooth paste130g|£2.00
-Fuku Lungs 1kg|£3.99
-Maggi chicken powder|£2.70
-Maggi Chicken Cubes|£3.99
-Knorr Chicken (8gx45) 2|£5.00
-Cat fish 8/10 pack|£20.99
-Fuku/lungs 1kg|£3.99
-Waake Leaves|£1.99
-Aani Golden Sella Basmatti Rice 10kg|£19.99
-African Queen Mackerel|£2.99
-AH Achi|£1.79
-Ground Hot Pepper|£1.79
-Ground Ogbonno 80g|£1.99
-Ground Okra 50g|£1.39
-Ground Prawns 70g|£4.49
-AH Stockfish Cod Head 300g|£4.99
-Stockfish Trimmings 100g|£3.79
-AH Tom Brown 500g|£3.99
-AH Whole Crayfish 40g|£1.79
-AH Whole Crayfish 70g|£2.79
-Whole Hot Pepper|£1.79
-AH Whole Ogbonno 80g|£1.99
-Yam Flour 5kg|£12.99
-Exeter Corned Beef 340g|£4.50
-Ghana Gari 10kg|£13.99
-King Prawns/shrimp 400g|£4.50
-KTC White Kidney Beans 400g|£0.80
-Lipton Tea 200g|£2.99
-Maggi Liquid Mild 125ml|£1.50
-Makazo Black Soap|£7.99
-Pangash Whole|£9.99
-Quaker Oats 500g|£1.99
-Queen Elizabeth Cocoa Butter Cream 500ml|£4.99
-Queen Elizabeth Cocoa Butter Cream 250ml|£2.99
-TS Crayfish Cubes|£3.20
-Funbact A Creame|£2.50
-Plantain quarter|£14.00
-Giant snail 950g|£45.00
+Egusi/Melon 400g|£6.99
+Yam 1kg|£4.00
+Sweet Potatoes 1kg|£4.99
+Iwisa 2Kg|£3.20
+Iwisa 5kg|£8.50
+Iwisa 10kg|£15.99
 Semolina 10kg|£19.99
-Liver 1kg|£3.99
-Vitamalt Box of 24|£26.99
 Onions 4kg|£3.00
-AH Achi 50g|£1.79
-AH Banku Mix 1kg|£3.99
-AH Bobolo 700g|£2.99
-AH Cassava Dough|£3.99
-AH Cassava Dough 2kg|£3.99
-AH Cassava Flour 3.5kg|£6.99
-AH Catfish Fillet 200g|£7.49
-AH Ghana Gari 1.5kg|£2.99
-AH Ghana Gari 3.5kg|£6.99
-AH Ground LIst 100g|£1.69
-AH Ijebu Garri 1.5kg|£2.99
-AH Ijebu Garri 5kg|£8.99
-AH Oat Poundo 4kg|£9.99
-AH Tuo Zaafi 3.5kg|£9.99
-AH Frozen Uziza Leaves 200g|£2.00
-AH Water Leaves 500g|£2.00
-AH Yellow Gari 1.5kg|£3.49
-AH Yellow Gari 3.5kg|£7.49
-Afrimalt Can 12x500ml|£13.99
-Afrimalt 500ml|£1.20
-AH Tuo Zaafi 1kg|£3.49
-Apollo Sardines 125g|£1.20
-Dalgety Slimline Tea 40g|£2.99
-Dalgety Honey & Ginger Tea 72g|£2.50
-Dalgety Lemon & Ginger Tea 54g|£2.50
-Geisha Mackerel in Chilli 425g Red|£2.50
-Geisha Mackerel in Tomato 425g Green|£2.50
-Gino Thyme|£0.20
-frozen Smoked Cowfoot|£3.99
-IslandBest Golden Sella Basmatti Rice 10kg|£15.99
-IslandBest Golden Sella Basmatti Rice 5kg|£8.49
-Milo Ghana 400g|£5.99
-Milo Asian 1.4kg|£12.99
-Pegasus Table Salt|£1.60
-Pika frozen Water Leaves 250g|£1.50
-RG Kenkey 750g|£2.99
-RG Shitto Hot Sauce 160ml|£3.49
-RG Shitto Hot Sauce 350ml|£5.49
-Sapna Garlic Paste 1kg|£2.99
-Sapna Ginger Garlic (mix) paste|£2.99
-Sapna Ginger Paste 1kg|£2.99
-Smoked Turkey Midwings 5kg|£36.99
-Whole Smoked Hen (Hard Chicken)|£5.99
-Abido Cream|£7.50
-Purregro Ofada rice 4kg|£17.99
-Puregro Rosemary 40g|£0.79
-cowfoot bone|£3.99
-Soursop|£12.00
-Maggi Liquid Seasoning 960ml|£6.99
-Panla Ejakika|£3.99
-Haven Iru|£2.20
-Dunns River Jamaican Callabo|£2.99
-Mighty Malt |pk 6|£7.99
-Lasor Beef 10g|£0.20
-Jamaica Valley TO DI BONE 400g|£7.99
-Ovaltine|£8.99
-Puregro Ginger & Tumeric Tea 40g|£1.70
-Puregro Lemon & ginger Tea 40g|£1.79
-Mogu Blackcurrant|£0.99
-Mogu Mango Drink|£0.99
-Tetmosol 75g|£1.20
-Puregro Cayenne Pepper 100g|£1.19
-Tiger Curry Masala|£0.20
-Rani Co|£14.99
+Chicken 10kg|£20.99
+Goat meat with skin 1kg|£20.99
+Liver 1kg|£3.99
+Yam Flour 5kg|£12.99
+Yam Flour 10kg|£20.00
 family Combo|£69.99
-Sweet Potato Box|£40.00
-Ginger 700g|£1.99
-Maputi|£7.99
-Roller Meal|£17.99
-Sorghum 5kg|£9.50
-Hello|£1.20
-Freezits|£1.50
-Pearlenta Multigrain 10kg|£20.99
-Kulikuli big|£3.50
-Suya spice (yaji) 250g|£3.50
-Coconut Candy|£1.99
-Proteinm combo|£105.00
-Aani Golden Sella 5kg|£10.50
-Ground Crayfish 40g|£1.79
-AH Honey Beans  4kg|£15.99
-Waakye Leaves Powder 120g|£1.99
-Buttermint Sweet|£1.50
-Dalgety Lemongrass/Fevergrass Tea 40g|£2.50
-Dalgety Moringa with Green tea 40g|£2.99
-Dalgety Moringa with Pepermint 40g|£2.99
-Dalgety Pure Soursop Tea|£2.99
-Dalgety Pure soursop & Ginger Tea|£2.99
-Dalgety Pure Soursop_Moringa Tea 40g|£2.99
-Dettol Soap(Original)|£1.99
-Dettol Soap Skincare|£0.95
-Jafro Chinchin Coconut 160g|£1.50
-Jafro Chinchin Peanut 250g|£1.99
-Jafro Chinchi Peanut 450g|£3.50
-La Vivriere Soungouf 400g|£2.20
-Onga stew 8g|£0.20
-Setara 5Kg|£10.99
-Spicecity Fried Rice 10g|£0.20
-Spicity Jollof Box 230pcs|£29.99
-Spicity Jollof & Stew 100g|£0.99
-Tetmosol 120g|£1.99
-Ts Sugarcane Juice 310ml|£1.50
-Tura Soap 65g|£2.50
-Wisdom Toothbrush|£0.99
-Cow meat with skin|£12.99
-Carotone|£7.99
-Puregro chips|£16.99
-Peanut|£3.99
-Iwisa Instant porridge 1kg|£2.99
-Puregro Brown Beans 500g|£2.69
-Puregro Cashew 700g|£6.99
-Puregro Cashews nut 700g|£7.99
-Puregro chickpeas|£2.99
-puregro Garlic Granules 300g|£2.49
-puregro Garlic Powder 100g|£0.79
-Nescafe roll of 11|£5.00
-Gino Asun|£0.69
-Onga Beef|£1.50
-Honey 250ml|£6.99
-Honey 1L|£18.99
-Ofada 2kg|£6.99
-Mortar size 2|£12.99
-Mortar Size 3|£15.99
-Groundnut|£6.99
-White Millet|£2.99
-maggi Beef Powder|£2.99
-O0FADA 1KG|£2.50
-ofada 2kg|£6.99
-Lemon plus|£1.50
-Ghana Sack|£2.99
-Ghana Sack Big|£6.99
-Tasty Powder|£2.99
-honey 4kg|£94.99
-Dusting Powder|£2.99
-Apple Hair creame Medium|£4.99
-Brazillian wool|£1.50
-Soul mate|£4.99
-Damatol Big|£8.99
-Damatol small|£2.99
-Bell Pepper Box|£15.99
-Round About|£3.99
-Puregro Ground Egusi 1oog|£1.79
-Puregro Chickpeas 500g|£1.49
-Puregro Ground Egusi 200g|£2.99
-Puregro Ground Ogbonno 130g|£3.29
-Puregro Ground Ogbonno 80g|£1.99
-Puregro Ijebu garri 500g|£1.19
-Puregro Jollof Basmatti 10kg|£14.99
-Puregro Jollof Basmati 5kg|£7.99
-Puregro Jollof rice seasoning 300g|£3.49
-Puregro Ofada Rice 1.5kg|£6.99
-Puregro Parsley|£0.79
-Puregro Popcorn Kernels 500g|£0.99
-Puregro Pounded Yam 1.5kg|£5.99
-Puregero Red Peanut 1kg|£4.99
-Puregro Sorrel 100g|£1.59
-Puregro Sorrel 1kg|£9.99
-Puregro Stockfish Head 300g|£4.99
-Puregro Whole Crayfish 40g|£1.79
-Puregro Whole Crayfish 70g|£2.99
-Puregro Whole egusi 100g|£1.79
-Puregro Whole Egusi 200g|£2.99
-Puregro Whole Ogbonno 130g|£3.29
-Vitamaklt Ginger 6pk|£8.50
-chivita|£2.50
-Leg Stone|£1.20
-Tiger blade|£0.99
-Red Onion 6kg|£9.00
-Catfish|£4.50
-Ripe Plantain half box|£27.00
-red potato|£4.30
-Ginger Box|£37.00
-Ginger 650g|£2.80
-Tilapia|£4.50
-Froyal hair|£15.99
-Crochet hair|£12.99
-B-Curl hair|£9.99
-Modern Queen|£7.99
-Awike Waves|£6.99
-U-mi hair|£5.99
-Big Xpression|£12.99
-Small Xpression|£4.99
-Kinky Hair|£5.99
-Kinky Big hair|£8.99
-French Curls|£9.99
-Boho/Ijoy Curls|£18.00
-Foax Locs|£15.00
-Passion Twist|£6.50
-Vietnamest hair|£11.99
-Rochet hair|£13.99
-Three D plus hair|£14.99
-SMP Hair|£10.99
-Joy Collections|£7.99
-Weavon Softer|£5.99
-Braidon hair|£14.99
-Darling Hair|£5.99
-Gold hair|£8.99
-Jojo Waves|£20.99
-Lush|£10.00
-Big Black lush|£13.99
-Adorable hair|£7.99
-Waves|£15.99
-Rainbow hair|£30.99
-Water leaf|£8.00
-Pluvera box|£45.00
-Pluvera Half Box|£23.00
-AH Sorrel Leaves|£3.49
-African Queen Sardines|£1.00
-Maltina|£13.99
-Jafro Chin Chin 250g|£1.99
-Milo Asian 400g|£3.99
-Hungryman noodle4s|£1.00
-Hungryman 3|£2.50
-Indomie Superpasck|£0.80
-Superpack 3|£2.00
-Red Peanut|£4.99
-Red Kidney Beans 2kg|£4.99
-Agbalumo 3|£2.50
-Mackerel/Titus 20kg|£108.00
-Salmon Boneless 600g|£6.90
-Salmon steaks 160g|£6.50
-Tilapia steaks 1kg|£4.50
-Uganda Pepper box|£58.00
-Uganda Pepper|£19.00
-Palm wine/ Emu|£2.70
-Acha/Fonio grain|£7.99
-Long Pepper|£6.00
-Bournvita Big|£10.99
-Lemon Juice|£1.20
-Half box of yam|£22.50
-AH Cocoyam fufu|£2.99
-AH ground crayfish 150g|£5.49
-Catfish Chunks smoked 300g|£10.99
-Meditrit-3|£5.50
-Beef|£9.99
 Grill combo|£100.00
-Ah Catfish Ring Smoked 300g|£10.49
-Ah Honey Beans 1.5kg|£6.99
-Dalgety Camomile&Lemongrass Tea 40g|£2.50
-Dalgety Cinnamon& pepeermint Tea|£2.50
-Dalgety Goodnight sleep Tea 40g|£3.20
-Dalgety Green &Ginger Tea 40g|£2.50
-Dalgety Ginseng & Ginger 9g|£2.99
-Dalgety Mango Leaf Tea 40g|£2.50
-Dalgety Moringa with ginger Tea 40g|£3.20
-Dalgety Neem Tea 40g|£2.50
-Dalgety Pure Green tea 40g|£2.50
-Dalgety Pure moringa tea 40|£3.20
-Dalgety Pure Peppermint Tea 40g|£2.50
-Dalgety Tumeric &Ginger Tea 40g|£3.20
-Dalgety Pure Tumeric tea 40g|£2.50
-Dalgety Tumeric &Black Pepper 40g|£2.50
-DR BBQ Seasoning 600g|£4.99
-DR Curry Goat seasoning 100g|£1.50
-Fufu Flakes 10k|£45.99
-Gino Peppered tomato paste|£0.60
-Haffinique Peanut 510g|£3.99
-Kawun/Potash 200g|£2.20
-Megamalt 6pk|£4.69
-Rajah Whole Black pepper|£2.99
-Raja Cinamon stick(CASSIA BARK)|£1.00
-RG Shitto Extra Hot 350ml|£5.49
-Spicity Chicken|£0.20
-Spicity Fried Rice|£0.20
-Tolly boy 20kg|£31.99
-Tondi peanut 510g|£3.99
-Ts Beef Stock|£3.99
-Ts Coconut Milk|£0.99
-Ts Instant Ginger Tea|£2.99
-Ts Jollof Rice Powder 1kg|£5.50
-Ts Lamb Powder|£4.20
-Ts White Kiney Beans|£1.99
-Lasor Peppersoup 10g|£0.20
-Scent Leave|£3.00
-Kokoro|£2.00
-Chicken wings|£23.99
-Turkey wings Box|£38.99
-Yam flour 10kg|£16.00
-Smoked mask 1kg|£3.99
-Tilapia 500-800g|£9.99
-shaki box(uncut) 10kg|£38.00
-chicken 1kg|£2.99
-Yellow Plantain Box|£52.00
-Yellow plantain quater|£13.00
-Okpei 50g|£5.99
-Ugba 100g|£2.99
-Prekese 100g|£1.99
-Fresh Eggs Crate|£6.50
-Blueband 250g(small)|£2.50
-Dates|£1.50
-Jack Mackerel/Kote Box|£58.00
-Jack Mckerel/Kote Half Box|£29.00
-Indomie Superpack box|£13.99
-Indomie Onion Superpack|£16.99
-Nkulenu Palm Soup Abemudro 780g|£4.99
-Bean flour 4kg|£12.99
-Puregro Cassva Dough 2kg|£3.99
-puregro chilli Powder|£0.89
-Puregro Zomi Palm Oil 1Ltr|£3.79
-TwoHues Extra Strong ginger 100g|£0.99`;
+Proteinm combo|£105.00`;
 
 const COMBOS = [
-  {name:'Grill Starter', price:100, keywords:['grill starter','grill combo','grill']},
-  {name:'Odogwu Box', price:145, keywords:['odogwu','odogwu box']},
-  {name:'Big 3 Combo', price:105, keywords:['big 3','big three','big3','protein combo','proteinm combo']}
+  {name:'Grill combo', price:100, keywords:['grill starter','grill combo','grill']},
+  {name:'family Combo', price:69.99, keywords:['family combo','family']},
+  {name:'Proteinm combo', price:105, keywords:['big 3','big three','big3','protein combo','proteinm combo']}
 ];
 
 let cart = [];
@@ -1191,15 +300,15 @@ PRODUCT CATALOGUE (Name|Price):
 ${CATALOG}
 
 SPECIAL COMBOS (FREE delivery included in price):
-- Grill Starter: £100.00 (free delivery)
-- Odogwu Box: £145.00 (free delivery)
-- Big 3 Combo: £105.00 (free delivery)
+- Grill combo: £100.00 (free delivery)
+- family Combo: £69.99 (free delivery)
+- Proteinm combo: £105.00 (free delivery)
 
 DELIVERY RULES:
 - Fee = £15 x ceil(total_kg / 20). Example: 50kg = 3 x £15 = £45
 - Combos have FREE delivery
 - Frozen items: delivered ONLY in England, Scotland and Wales
-- Items with no weight in name: flag with ⚠️ but still add to order and include in total price (just note delivery weight unconfirmed)
+- Items with no weight in name: flag with ⚠️ but still add to order (note delivery weight unconfirmed)
 
 PAYMENT DETAILS (share when customer is ready to pay or asks):
 Account Number: 00235529
@@ -1208,31 +317,30 @@ Account Name: MightyOlu Ltd
 Bank: Royal Bank of Scotland
 
 RESPONSE RULES:
-1. When customer says hi/hello → greet warmly with: "👋 Welcome to MightyOlu Grocery 🇳🇬" then offer help
+1. When customer says hi/hello → greet warmly, offer help
 2. When customer asks about products → list matching items with prices clearly
 3. When customer orders items → confirm each item with price, calculate total + delivery
-4. Always end EVERY response with this exact JSON block (no markdown, no backticks):
-<!--CART:{"add":[{"name":"exact product name from catalogue","price":0.00,"qty":1,"weight_kg":0.0}],"remove":[],"clear":false}-->
+4. Always end EVERY response with this exact block (no markdown):
+<!--CART:{"add":[{"name":"exact product name","price":0.00,"qty":1,"weight_kg":0.0}],"remove":[],"clear":false}-->
 - weight_kg: extract from product name (e.g. 5kg=5.0, 500g=0.5). If unknown set to -1
 - For combos set weight_kg to 0 (free delivery)
 - Only include newly mentioned items in "add"
 - If customer removes item put exact name in "remove" array
 - If no cart changes, still include the block with empty arrays
-5. Be concise, friendly, professional`;
+5. Be concise, friendly, professional. Keep responses short and clear.`;
 
 function extractWeight(name) {
   let m = name.match(/(\d+\.?\d*)\s*kg/i);
   if (m) return parseFloat(m[1]);
-  m = name.match(/(\d+\.?\d*)\s*g/i);
+  m = name.match(/(\d+\.?\d*)\s*g/i);
   if (m) return parseFloat(m[1]) / 1000;
   return -1;
 }
 
 function calcDelivery() {
-  let hasComboOnly = cart.length > 0 && cart.every(i => i.weight_kg === 0);
+  let hasNonCombo = false;
   let totalKg = 0;
   let hasUnknown = false;
-  let hasNonCombo = false;
   for (let item of cart) {
     if (item.weight_kg === 0) continue;
     hasNonCombo = true;
@@ -1322,22 +430,41 @@ async function sendMessage() {
   btn.disabled = true;
   showTyping();
 
-  history.push({role:'user', parts:[{text}]});
+  // Build messages array for Groq (OpenAI format)
+  const messages = [
+    {role: 'system', content: SYSTEM},
+    ...history,
+    {role: 'user', content: text}
+  ];
 
   try {
-    const body = {
-      system_instruction: {parts:[{text: SYSTEM}]},
-      contents: history
-    };
-    const res = await fetch(GEMINI_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(body)
+    const res = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + GROQ_KEY
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: messages,
+        max_tokens: 1024,
+        temperature: 0.7
+      })
     });
-    const data = await res.json();
-    if (!res.ok) { hideTyping(); addMsg('bot', 'API Error: ' + (data?.error?.message || JSON.stringify(data))); btn.disabled=false; return; }
-    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not process that. Please try again.';
 
+    const data = await res.json();
+
+    if (!res.ok) {
+      hideTyping();
+      const errMsg = data?.error?.message || JSON.stringify(data);
+      addMsg('bot', 'API Error: ' + errMsg);
+      btn.disabled = false;
+      return;
+    }
+
+    const raw = data?.choices?.[0]?.message?.content || 'Sorry, I could not process that. Please try again.';
+
+    // Parse cart update
     const cartMatch = raw.match(/<!--CART:(.*?)-->/s);
     if (cartMatch) {
       try {
@@ -1355,21 +482,33 @@ async function sendMessage() {
             if (existing) {
               existing.qty += (a.qty || 1);
             } else {
-              cart.push({name: a.name, price: a.price, qty: a.qty || 1, weight_kg: a.weight_kg != null ? a.weight_kg : extractWeight(a.name)});
+              cart.push({
+                name: a.name,
+                price: a.price,
+                qty: a.qty || 1,
+                weight_kg: a.weight_kg != null ? a.weight_kg : extractWeight(a.name)
+              });
             }
           }
         }
         renderCart();
-      } catch(e) {}
+      } catch(e) { console.log('Cart parse error:', e); }
     }
 
-    const clean = raw.replace(/<!--CART:.*?-->/s,'').replace(/```json[\s\S]*?```/g,'').trim();
-    history.push({role:'model', parts:[{text: raw}]});
+    // Update history (store without system prompt)
+    history.push({role: 'user', content: text});
+    history.push({role: 'assistant', content: raw});
+
+    // Keep history manageable (last 20 messages)
+    if (history.length > 20) history = history.slice(-20);
+
+    const clean = raw.replace(/<!--CART:.*?-->/s,'').trim();
     hideTyping();
     addMsg('bot', escHtml(clean));
+
   } catch(e) {
     hideTyping();
-    addMsg('bot', 'Error: ' + (e.message || 'Check connection'));
+    addMsg('bot', 'Connection error: ' + (e.message || 'Please check your internet'));
   }
   btn.disabled = false;
 }
@@ -1460,9 +599,8 @@ window.onclick = function(e) {
   if (e.target.id === 'noteOverlay') closeNote();
 }
 
-// Init greeting
 window.onload = function() {
-  addMsg('bot', '👋 Welcome to MightyOlu Grocery 🇳🇬\n\nI\'m Olu, your sales assistant! I can help you:\n• Browse our 1,000+ products\n• Check prices instantly\n• Calculate your total + delivery\n• Generate your delivery note\n\nWhat would you like to order today? 😊');
+  addMsg('bot', '👋 Welcome to MightyOlu Grocery 🇳🇬\n\nI\'m Olu, your sales assistant! I can help you:\n• Browse our products\n• Check prices instantly\n• Calculate your total + delivery\n• Generate your delivery note\n\nWhat would you like to order today? 😊');
 };
 </script>
 </body>
